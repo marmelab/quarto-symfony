@@ -1,25 +1,35 @@
 <?php
-namespace Quarto\Entity;
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @Entity
+ * @ORM\Entity(repositoryClass="App\Repository\GameRepository")
+ * @ORM\Table
  */
-class Game
-{
-    /** @Id @Column(type="integer") */
+class Game {
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+
+    /** @Id @ORM\Column(type="integer") */
     private $id_game;
 
-    /** @Column(type="bool") */
+    /** @ORM\Column(type="json_array") */
+    private $grid;
+
+    /** @ORM\Column(type="bool") */
     private $is_player_one_turn;
 
-    /** @Column(type="integer") */
+    /** @ORM\Column(type="integer") */
     private $selected_piece;
 
-    public function __construct(int $id_game, bool $is_player_one_turn, int $selected_piece)
+    public function __construct(int $id_game, $grid, bool $is_player_one_turn, int $selected_piece)
     {
         $this->id_game = $id_game;
+        $this->grid = $grid;
         $this->is_player_one_turn = $is_player_one_turn;
         $this->selected_piece = $selected_piece;
     }
@@ -27,6 +37,11 @@ class Game
     public function getIdGame() : int
     {
         return $this->id_game;
+    }
+
+    public function getGrid()
+    {
+        return $this->grid;
     }
 
     public function getIsPlayerOneTurn() : bool
@@ -37,6 +52,11 @@ class Game
     public function getSelectedPiece() : int
     {
         return $this->selected_piece;
+    }
+
+    public function setGrid($grid)
+    {
+        $this->grid = $grid;
     }
 
     public function setIsPlayerOneTurn(int $is_player_one_turn)
