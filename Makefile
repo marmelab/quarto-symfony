@@ -9,6 +9,12 @@ composer-install: ## Run composer install within the host
 	docker-compose run --no-deps --rm \
 		php bash -ci 'bin/composer install'
 
+init-db: ## Create and setup the database
+	docker-compose up -d postgres
+	docker-compose run --no-deps --rm php \
+		bash -ci './bin/console doctrine:database:create --if-not-exists && ./bin/console doctrine:schema:update --force'
+	docker-compose down
+
 install: composer-install ## Install docker environnement
 
 run: ## Start the server
@@ -18,5 +24,8 @@ stop: ## Stop the server
 	docker-compose down
 
 test: ## Test the code
-	docker-compose run --no-deps --rm \
-		php bash -ci 'php bin/phpunit'
+	docker build -t service_php docker/php
+	$(MAKE) composer-install
+	docker run -it --rm -v "${PWD}/quarto:/quarto" service_php bin/phpunit
+
+.DEFAULT_GOAL := help
