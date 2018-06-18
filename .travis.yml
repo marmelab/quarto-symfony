@@ -1,0 +1,17 @@
+# https://travis-ci.com/marmelab/quarto-symfony
+
+sudo: required
+language: php
+
+services:
+    - docker
+
+php: "7.2"
+
+install: make install
+
+script: make test
+
+branches:
+  only:
+    - master
