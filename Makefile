@@ -20,6 +20,3 @@ stop: ## Stop the server
 test: ## Test the code
 	docker-compose run --no-deps --rm \
 		php bash -ci 'php bin/phpunit'
-	# docker build -t service_php docker/php
-	# $(MAKE) composer-install
-	# docker run -it --rm -v "${PWD}/app:/app" php bin/phpunit
