@@ -31,7 +31,4 @@ class GameController extends Controller {
       'pieces' => $this->api->getAllPieces($game)
     ]));
   }
-
-
-
 }
