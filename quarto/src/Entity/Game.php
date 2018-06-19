@@ -57,7 +57,7 @@ class Game {
         $this->grid = $grid;
     }
 
-    public function setIsPlayerOneTurn(int $is_player_one_turn)
+    public function setIsPlayerOneTurn(bool $is_player_one_turn)
     {
         $this->is_player_one_turn = $is_player_one_turn;
     }

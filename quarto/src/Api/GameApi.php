@@ -31,7 +31,7 @@ class GameApi {
             foreach($game->getGrid() as $raw) {
                 foreach($raw as $item) {
                     if ($item == $i) {
-                        $pieces[$i]->$used = true;
+                        $pieces[$i]->setUsed(true);
                     }
                 }
             }
@@ -42,13 +42,13 @@ class GameApi {
 
   public function changeTurn(Game $game) : Game {
     $nextGame = clone $game;
-    $nextGame->$is_player_one_turn = !$is_player_one_turn;
+    $nextGame->setIsPlayerOneTurn(!$nextGame->getIsPlayerOneTurn());
     return $nextGame;
   }
 
   public function selectNextPiece(Game $game, int $id_piece) : Game {
     $nextGame = clone $game;
-    $nextGame->selected_piece = $id_piece;
+    $nextGame->setSelectedPiece($id_piece);
     return $nextGame;
   }
 
