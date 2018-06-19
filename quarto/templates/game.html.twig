@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+{% block header %}
+  <div class="section">
+    <h4>Welcome to Quarto online !</h4>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div class="board">
+    <div>
+      {% include 'grid.html.twig' with {'grid': game.grid} %}
+    </div>
+    <div>
+      {% include 'pieces.html.twig' with {'pieces': pieces} %}
+    </div>
+  </div>
+{% endblock %}

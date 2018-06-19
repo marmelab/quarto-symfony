@@ -1,0 +1,11 @@
+<div class="grid">
+  {% for row in grid %}
+    <div class="grid-row">
+      {% for value in row %}
+          <div class="grid-box z-depth-1">
+              <span class="grid-box-value">{{value}}</span>          
+          </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+</div>
