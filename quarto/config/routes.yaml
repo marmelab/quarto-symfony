@@ -11,4 +11,3 @@ game:
   controller: 'App\Controller\GameController::current'
   requirements:
         id_game: '\d+'
-
