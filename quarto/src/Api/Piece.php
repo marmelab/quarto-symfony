@@ -1,7 +1,6 @@
 <?php
 namespace App\Api;
 
-
 class Piece {
 
     private $id;
