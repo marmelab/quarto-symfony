@@ -13,20 +13,18 @@ class Game {
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-
-    /** @Id @ORM\Column(type="integer") */
     private $id_game;
 
     /** @ORM\Column(type="json_array") */
     private $grid;
 
-    /** @ORM\Column(type="bool") */
+    /** @ORM\Column(type="boolean") */
     private $is_player_one_turn;
 
     /** @ORM\Column(type="integer") */
     private $selected_piece;
 
-    public function __construct(int $id_game, $grid, bool $is_player_one_turn, int $selected_piece)
+    public function __construct(int $id_game, Array $grid, bool $is_player_one_turn, int $selected_piece)
     {
         $this->id_game = $id_game;
         $this->grid = $grid;
@@ -39,7 +37,7 @@ class Game {
         return $this->id_game;
     }
 
-    public function getGrid()
+    public function getGrid() : Array
     {
         return $this->grid;
     }
@@ -54,7 +52,7 @@ class Game {
         return $this->selected_piece;
     }
 
-    public function setGrid($grid)
+    public function setGrid(Array $grid)
     {
         $this->grid = $grid;
     }
