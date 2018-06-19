@@ -3,19 +3,15 @@
     flex-direction: row;
 }
 
-
 .grid-box {
     height: 30px;
     width: 30px;
 }
 
-
-
 .pieces-row {
     display: flex;
     flex-direction: row;
 }
-
 
 .piece-box {
     height: 30px;
