@@ -50,10 +50,71 @@ class GameApi {
         $game->setSelectedPiece($id_piece);
     }
 
-    static function placePiece(Game $game, int $x, int $y) {
+    static function placePiece(Game $game, int $x, int $y) : array {
+        $winningLine = GameApi::getWinningPosition($game, $x, $y, $game->getSelectedPiece());
         $grid = $game->getGrid();
         $grid[$y][$x] = $game->getSelectedPiece();
         $game->setGrid($grid);
         $game->setSelectedPiece(0);
+        return $winningLine;
+    }
+
+    static function getWinningPosition(Game $game, int $x, int $y, int $piece) : array {
+        $testGame = clone $game;
+        $grid = $testGame->getGrid();
+        $grid[$y][$x] = $piece;
+        $testGame->setGrid($grid);
+        $piecesLine = GameApi::getPiecesRaw($testGame, $x, $y);
+        if (Piece::isWinningLine($piecesLine)) {
+            return $piecesLine;
+        }
+        $piecesLine = GameApi::getPiecesColumn($testGame, $x, $y);
+        if (Piece::isWinningLine($piecesLine)) {
+            return $piecesLine;
+        }
+        $piecesLine = GameApi::getPiecesSlashDiag($testGame, $x, $y);
+        if (Piece::isWinningLine($piecesLine)) {
+            return $piecesLine;
+        }
+        $piecesLine = GameApi::getPiecesBackSlashDiag($testGame, $x, $y);
+        if (Piece::isWinningLine($piecesLine)) {
+            return $piecesLine;
+        }
+        return [];
+    }
+
+    static function getPiecesRaw(Game $game, int $x, int $y) : array {
+        return $game->getGrid()[$y];
+    }
+
+    static function getPiecesColumn(Game $game, int $x, int $y) : array {
+        $piecesLine = [];
+        $grid = $game->getGrid();
+        for ($i = 0; $i < count($grid); $i++) {
+            $piecesLine[$i] = $grid[$i][$x];
+        }
+        return $piecesLine;
+    }
+
+    static function getPiecesSlashDiag(Game $game, int $x, int $y) : array {
+        $piecesLine = [];
+        $grid = $game->getGrid();
+        if ($x == $y) {
+            for ($i = 0; $i < count($grid); $i++) {
+                $piecesLine[$i] = $grid[$i][$i];
+            }
+        }
+        return $piecesLine;
+    }
+
+    static function getPiecesBackSlashDiag(Game $game, int $x, int $y) : array {
+        $piecesLine = [];
+        $grid = $game->getGrid();
+        if ($x == count($grid)-$y-1) {
+            for ($i = 0; $i < count($grid); $i++) {
+                $piecesLine[$i] = $grid[$i][count($grid)-$i-1];
+            }
+        }
+        return $piecesLine;
     }
 }

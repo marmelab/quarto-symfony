@@ -8,7 +8,9 @@
       </div>
   </div>
   <div class="players-phase">
-    {% if (pieceSelected > 0) %}
+    {% if (winningLine|length > 0) %}
+      <span class="phase-value victory">You WON !!!!!!!</span>
+    {% elseif (pieceSelected > 0) %}
       <span class="phase-value">Place your piece on the board</span>
     {% else %}
       <span class="phase-value">Choose the next piece for your opponent</span>

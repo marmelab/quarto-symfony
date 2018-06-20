@@ -8,16 +8,26 @@
 {% block content %}
   <div class="board">
     <div>
-      {% include 'grid.html.twig' with {'gameId': game.getIdGame(), 'grid': game.getGrid(), 'pieceSelected' : game.getSelectedPiece()} %}
+      {% include 'grid.html.twig' with {
+        'gameId': game.getIdGame(), 
+        'grid': game.getGrid(), 
+        'pieceSelected' : game.getSelectedPiece(),
+        'winningLine' : winningLine} %}
     </div>
     <div>
-      {% include 'pieces.html.twig' with {'gameId': game.getIdGame(), 'pieces': pieces, 'pieceSelected' : game.getSelectedPiece()} %}
+      {% include 'pieces.html.twig' with {
+        'gameId': game.getIdGame(), 
+        'pieces': pieces, 
+        'pieceSelected' : game.getSelectedPiece(),
+        'winningLine' : winningLine} %}
     </div>
     <div>
-      {% include 'players.html.twig' with {'playerOneTurn': game.getIsPlayerOneTurn(), 
+      {% include 'players.html.twig' with {
+        'playerOneTurn': game.getIsPlayerOneTurn(), 
         'pieceSelected' : game.getSelectedPiece(),
         'player1Name' : 'Player 1 ',
-        'player2Name' : 'Player 2' } %}
+        'player2Name' : 'Player 2',
+        'winningLine' : winningLine } %}
     </div>
   </div>
 {% endblock %}

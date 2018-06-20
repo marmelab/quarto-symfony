@@ -7,7 +7,7 @@
       {% for value in row %}
         {% set x = x + 1 %}
         <a href="{{ pieceSelected == 0 or value != '.' ? '#' :  path('game_place', {'id_game': gameId, 'x': x, 'y': y}) }}">
-            <div class="default-box grid-box {{ value != '.' ? 'filled' : '' }} {{ pieceSelected == 0 or value != '.' ? 'unclicable' : '' }} z-depth-1">
+            <div class="default-box grid-box {{ value != '.' ? 'filled' : '' }} {{ pieceSelected == 0 or value != '.' ? 'unclicable' : '' }} {{ value in winningLine ? 'victory' : '' }} z-depth-1">
                 <span class="grid-box-value">{{value}}</span>          
             </div>
         </a>
