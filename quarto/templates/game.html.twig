@@ -8,10 +8,16 @@
 {% block content %}
   <div class="board">
     <div>
-      {% include 'grid.html.twig' with {'grid': game.grid} %}
+      {% include 'grid.html.twig' with {'grid': game.getGrid()} %}
     </div>
     <div>
-      {% include 'pieces.html.twig' with {'pieces': pieces} %}
+      {% include 'pieces.html.twig' with {'pieces': pieces, 'pieceSelected' : game.getSelectedPiece()} %}
+    </div>
+    <div>
+      {% include 'players.html.twig' with {'playerOneTurn': game.getIsPlayerOneTurn(), 
+        'pieceSelected' : game.getSelectedPiece(),
+        'player1Name' : 'Player 1 ',
+        'player2Name' : 'Player 2' } %}
     </div>
   </div>
 {% endblock %}
