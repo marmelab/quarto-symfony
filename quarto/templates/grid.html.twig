@@ -1,4 +1,4 @@
-<div class="grid">
+<div class="grid {{ pieceSelected == 0 ? 'unclicable' : '' }} ">
   {% set y = -1 %}
   {% for row in grid %}
     {% set y = y + 1 %}

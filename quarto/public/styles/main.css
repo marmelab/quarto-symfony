@@ -44,10 +44,25 @@ a {
     cursor: initial;
 }
 
+.grid {
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.grid:not(.unclicable) {
+    background-color: rgb(209, 243, 209);
+}
+
 .pieces-row {
+    padding: 5px;
     margin-top: 50px;
     display: flex;
     flex-direction: row;
+    border-radius: 10px;
+}
+
+.pieces-row:not(.unclicable) {
+    background-color: rgb(209, 243, 209);
 }
 
 .piece-box {
@@ -92,7 +107,7 @@ a {
 .default-player.active {
     font-weight: bold;
     color:green;
-    border-color: green;
+    border-color: rgb(209, 243, 209);
 }
 
 .default-player:not(.active) {
