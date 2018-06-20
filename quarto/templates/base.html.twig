@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+  <head>
+    <meta charset="UTF-8">
+    <title>{% block pageTitle %}Quarto online!{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}" />
+    {% block refresh %}{% endblock %}
+    {% block stylesheets %}
+      <link rel="stylesheet" href="{{ asset('styles/main.css') }}"/>
+    {% endblock %}
+  </head>
+  <body>
+    <nav class="blue lighten-1" role="navigation">
+      <div class="nav-wrapper container">
+        <a href="{{ path('index') }}" class="brand-logo">Quarto online!</a>
+      </div>
+    </nav>
+    <section class="container">
+      {% block header %}{% endblock %}
+      {% block content %}{% endblock %}
+    </section>
+  </body>
 </html>
