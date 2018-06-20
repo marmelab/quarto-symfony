@@ -20,7 +20,7 @@ body {
 }
 
 .default-box:hover {
-    opacity: 50%;
+    opacity: 40%;
 }
 
 .grid-box {
