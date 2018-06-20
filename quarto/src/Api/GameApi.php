@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Api;
 
 use App\Entity\Game;

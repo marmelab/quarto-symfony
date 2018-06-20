@@ -22,9 +22,11 @@ class Piece {
 
     public function setId(int $id) {
         $this->id = $id;
+        return $this;
     } 
 
     public function setUsed(bool $used) {
         $this->used = $used;
+        return $this;
     }
 }
