@@ -25,7 +25,7 @@ a {
     border-radius: 10px;
 }
 
-.default-box:hover:not(.selected) {
+.default-box:hover:not(.unclicable) {
     cursor: pointer;
     opacity: 0.4;
 }
@@ -38,6 +38,10 @@ a {
     opacity: 1;
     cursor: initial;
     background-color: cadetblue;
+}
+
+.grid-box.unclicable {
+    cursor: initial;
 }
 
 .pieces-row {
@@ -60,11 +64,13 @@ a {
     background-color: darkred;
 }
 
-.piece-box.phasePlacement:not(.used):not(.selected) {
-    opacity: 0.3;
+.piece-box.unclicable {
     cursor: initial;
 }
 
+.piece-box.unclicable:not(.selected) {
+    opacity: 0.3;
+}
 
 .players-name {
     display: flex;

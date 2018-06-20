@@ -8,7 +8,7 @@
 {% block content %}
   <div class="board">
     <div>
-      {% include 'grid.html.twig' with {'gameId': game.getIdGame(), 'grid': game.getGrid()} %}
+      {% include 'grid.html.twig' with {'gameId': game.getIdGame(), 'grid': game.getGrid(), 'pieceSelected' : game.getSelectedPiece()} %}
     </div>
     <div>
       {% include 'pieces.html.twig' with {'gameId': game.getIdGame(), 'pieces': pieces, 'pieceSelected' : game.getSelectedPiece()} %}

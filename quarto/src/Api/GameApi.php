@@ -53,4 +53,13 @@ class GameApi {
         $nextGame->setSelectedPiece($id_piece);
         return $nextGame;
     }
+
+    function placePiece(Game $game, int $x, int $y) : Game {
+        $nextGame = clone $game;
+        $grid = $nextGame->getGrid();
+        $grid[$y][$x] = $nextGame->getSelectedPiece();
+        $nextGame->setGrid($grid);
+        $nextGame->setSelectedPiece(0);
+        return $nextGame;
+    }
 }
