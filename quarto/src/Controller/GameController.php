@@ -12,17 +12,15 @@ use App\Repository\GameRepository;
 class GameController extends Controller {
 
   public const GRID_SIZE = 4;
-  private $api;
   private $twig;
 
-  public function __construct(\Twig_Environment $twig, GameApi $gameApi, GameRepository $gameRepository) {
+  public function __construct(\Twig_Environment $twig, GameRepository $gameRepository) {
     $this->twig = $twig;
-    $this->api = $gameApi;
     $this->gameRepository = $gameRepository;
   }
   
   public function new() {
-    $game = $this->api->new(self::GRID_SIZE);
+    $game = GameApi::new(self::GRID_SIZE);
 
     $this->gameRepository->save($game);
 
@@ -34,7 +32,22 @@ class GameController extends Controller {
       
     return new Response($this->twig->render('game.html.twig', [
       'game' => $game,
-      'pieces' => $this->api->getAllPieces($game)
+      'pieces' => GameApi::getAllPieces($game)
     ]));
+  }
+
+  public function select($id_game, $piece) {
+    $game = $this->gameRepository->findGameById($id_game);
+    GameApi::selectNextPiece($game, $piece);
+    GameApi::changeTurn($game);
+    $this->gameRepository->save($game);
+    return $this->redirectToRoute('game', array('id_game' => $game->getIdGame()));    
+  }
+
+  public function place($id_game, $x, $y) {
+    $game = $this->gameRepository->findGameById($id_game);
+    GameApi::placePiece($game, $x, $y);
+    $this->gameRepository->save($game);
+    return $this->redirectToRoute('game', array('id_game' => $game->getIdGame()));    
   }
 }

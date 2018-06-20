@@ -53,6 +53,11 @@ class Game {
         return $this->selected_piece;
     }
 
+    public function setIdGame(int $id_game)
+    {
+        $this->id_game = $id_game;
+    }
+
     public function setGrid(Array $grid)
     {
         $this->grid = $grid;

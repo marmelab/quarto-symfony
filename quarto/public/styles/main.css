@@ -3,6 +3,11 @@ body {
     font-size: 18px;
 }
 
+a {
+    text-decoration: none;
+    color:inherit;
+}
+
 .grid-row {
     display: flex;
     flex-direction: row;
@@ -20,7 +25,7 @@ body {
     border-radius: 10px;
 }
 
-.default-box:hover {
+.default-box:hover:not(.unclicable) {
     cursor: pointer;
     opacity: 0.4;
 }
@@ -35,10 +40,29 @@ body {
     background-color: cadetblue;
 }
 
+.grid-box.unclicable {
+    cursor: initial;
+}
+
+.grid {
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.grid:not(.unclicable) {
+    background-color: rgb(209, 243, 209);
+}
+
 .pieces-row {
+    padding: 5px;
     margin-top: 50px;
     display: flex;
     flex-direction: row;
+    border-radius: 10px;
+}
+
+.pieces-row:not(.unclicable) {
+    background-color: rgb(209, 243, 209);
 }
 
 .piece-box {
@@ -53,6 +77,14 @@ body {
     opacity: 0.3;
     cursor: initial;
     background-color: darkred;
+}
+
+.piece-box.unclicable {
+    cursor: initial;
+}
+
+.piece-box.unclicable:not(.selected) {
+    opacity: 0.3;
 }
 
 .players-name {
@@ -75,7 +107,7 @@ body {
 .default-player.active {
     font-weight: bold;
     color:green;
-    border-color: green;
+    border-color: rgb(209, 243, 209);
 }
 
 .default-player:not(.active) {

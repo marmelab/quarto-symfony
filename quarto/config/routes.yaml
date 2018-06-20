@@ -11,3 +11,11 @@ game:
   controller: 'App\Controller\GameController::current'
   requirements:
         id_game: '\d+'
+
+game_select:
+  path: /game/{id_game}/select/{piece}
+  defaults: { _controller: 'App\Controller\GameController::select' }
+
+game_place:
+  path: /game/{id_game}/place/{x}/{y}
+  defaults: { _controller: 'App\Controller\GameController::place' }

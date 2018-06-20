@@ -1,7 +1,9 @@
-<div class="pieces-row">
+<div class="pieces-row {{ pieceSelected > 0 ? 'unclicable' : '' }}">
   {% for piece in pieces %}
-    <div class="default-box piece-box {{ piece.used ? 'used' : '' }} {{ piece.id == pieceSelected ? 'selected' : '' }} z-depth-1">
-        <span class="piece-value">{{piece.id}}</span>          
-    </div>
+    <a href="{{ (pieceSelected > 0 or piece.used == true) ? '#' :  path('game_select', {'id_game': gameId, 'piece': piece.id}) }}">
+      <div class="default-box piece-box {{ piece.used ? 'used' : '' }} {{ piece.id == pieceSelected ? 'selected' : '' }} {{ pieceSelected > 0 or piece.used == true ? 'unclicable' : '' }} z-depth-1">
+          <span class="piece-value">{{piece.id}}</span>        
+      </div>
+    </a>  
   {% endfor %}
 </div>

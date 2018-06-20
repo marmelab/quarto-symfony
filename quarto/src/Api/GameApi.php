@@ -11,7 +11,7 @@ class GameApi {
 
     }
 
-    function new(int $size) : Game {
+    static function new(int $size) : Game {
         $grid = [];
 
         for ($i = 0; $i < $size; $i++) {
@@ -20,10 +20,10 @@ class GameApi {
                 $grid[$i][$j] = '.';
             }
         }
-        return new Game(1, $grid, true, 0);
+        return new Game(0, $grid, true, 0);
     }
 
-    function getAllPieces(Game $game) : Array {
+    static function getAllPieces(Game $game) : Array {
         $pieces = [];
         $size = count($game->getGrid());
 
@@ -42,15 +42,18 @@ class GameApi {
         return $pieces;
     }
 
-    function changeTurn(Game $game) : Game {
-        $nextGame = clone $game;
-        $nextGame->setIsPlayerOneTurn(!$nextGame->getIsPlayerOneTurn());
-        return $nextGame;
+    static function changeTurn(Game $game) {
+        $game->setIsPlayerOneTurn(!$game->getIsPlayerOneTurn());
     }
 
-    function selectNextPiece(Game $game, int $id_piece) : Game {
-        $nextGame = clone $game;
-        $nextGame->setSelectedPiece($id_piece);
-        return $nextGame;
+    static function selectNextPiece(Game $game, int $id_piece) {
+        $game->setSelectedPiece($id_piece);
+    }
+
+    static function placePiece(Game $game, int $x, int $y) {
+        $grid = $game->getGrid();
+        $grid[$y][$x] = $game->getSelectedPiece();
+        $game->setGrid($grid);
+        $game->setSelectedPiece(0);
     }
 }
