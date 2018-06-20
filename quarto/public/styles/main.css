@@ -55,7 +55,6 @@ body {
     background-color: darkred;
 }
 
-
 .players-name {
     display: flex;
     flex-direction: row;

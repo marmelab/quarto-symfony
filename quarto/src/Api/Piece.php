@@ -12,7 +12,6 @@ class Piece {
         $this->used = $used;
     }
 
-
     public function getId() : int {
         return $this->id;
     } 
@@ -27,7 +26,5 @@ class Piece {
 
     public function setUsed(bool $used) {
         $this->used = $used;
-    } 
-
-    
+    }
 }
