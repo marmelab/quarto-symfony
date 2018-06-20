@@ -40,15 +40,15 @@ class GameController extends Controller {
 
   public function select($id_game, $piece) {
     $game = $this->gameRepository->findGameById($id_game);
-    $game = $this->api->selectNextPiece($game, $piece);
-    $game = $this->api->changeTurn($game);
+    $this->api->selectNextPiece($game, $piece);
+    $this->api->changeTurn($game);
     $this->gameRepository->save($game);
     return $this->redirectToRoute('game', array('id_game' => $game->getIdGame()));    
   }
 
   public function place($id_game, $x, $y) {
     $game = $this->gameRepository->findGameById($id_game);
-    $game = $this->api->placePiece($game, $x, $y);
+    $this->api->placePiece($game, $x, $y);
     $this->gameRepository->save($game);
     return $this->redirectToRoute('game', array('id_game' => $game->getIdGame()));    
   }
