@@ -4,4 +4,10 @@ index:
 
 game_new:
   path: /game
-  defaults: { _controller: 'App\Controller\GameController::new' }
+  controller: 'App\Controller\GameController::new'
+
+game:
+  path: /game/{id_game}
+  controller: 'App\Controller\GameController::current'
+  requirements:
+        id_game: '\d+'

@@ -9,6 +9,14 @@ Install docker image
 make install
 ```
 
+## Init-db
+
+Mount database
+
+```
+make init-db
+```
+
 ## Run webserver
 
 Start the web server at http://localhost

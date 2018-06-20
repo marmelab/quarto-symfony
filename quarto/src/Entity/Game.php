@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -55,15 +56,18 @@ class Game {
     public function setGrid(Array $grid)
     {
         $this->grid = $grid;
+        return $this;
     }
 
-    public function setIsPlayerOneTurn(int $is_player_one_turn)
+    public function setIsPlayerOneTurn(bool $is_player_one_turn)
     {
         $this->is_player_one_turn = $is_player_one_turn;
+        return $this;
     }
 
     public function setSelectedPiece(int $selected_piece)
     {
         $this->selected_piece = $selected_piece;
+        return $this;
     }
 }

@@ -1,0 +1,17 @@
+<div class="players">
+  <div class="players-name">
+      <div class="default-player {{ playerOneTurn ? 'active' : '' }} z-depth-1">
+          <span class="player-value">{{player1Name}}</span>          
+      </div>
+      <div class="default-player {{ playerOneTurn == false ? 'active' : '' }} z-depth-1">
+          <span class="player-value">{{player2Name}}</span>          
+      </div>
+  </div>
+  <div class="players-phase">
+    {% if (pieceSelected > 0) %}
+      <span class="phase-value">Place your piece on the board</span>
+    {% else %}
+      <span class="phase-value">Choose the next piece for your opponent</span>
+    {% endif %}
+  </div>
+</div>

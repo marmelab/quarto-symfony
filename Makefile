@@ -24,8 +24,4 @@ stop: ## Stop the server
 	docker-compose down
 
 test: ## Test the code
-	docker build -t php docker/php
-	$(MAKE) composer-install
-	docker run -it --rm -v "${PWD}/quarto:/quarto" php bin/phpunit
-
-.DEFAULT_GOAL := help
+	docker-compose run --no-deps --rm php bin/phpunit

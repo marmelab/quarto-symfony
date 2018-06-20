@@ -1,0 +1,7 @@
+<div class="pieces-row">
+  {% for piece in pieces %}
+    <div class="default-box piece-box {{ piece.used ? 'used' : '' }} {{ piece.id == pieceSelected ? 'selected' : '' }} z-depth-1">
+        <span class="piece-value">{{piece.id}}</span>          
+    </div>
+  {% endfor %}
+</div>
