@@ -9,7 +9,10 @@
   </div>
   <div class="players-phase">
     {% if (winningLine|length > 0) %}
-      <span class="phase-value victory">You WON !!!!!!!</span>
+      <span class="phase-value victory">{{ playerOneTurn == true ? player1Name : player2Name }} Wins !!!!!!!</span>
+      <br/>
+      <br/>
+      <a class="new-game" href="{{ path('game_new') }}">Start a new game</a>
     {% elseif (pieceSelected > 0) %}
       <span class="phase-value">Place your piece on the board</span>
     {% else %}
