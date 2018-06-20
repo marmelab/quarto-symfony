@@ -24,4 +24,4 @@ stop: ## Stop the server
 	docker-compose down
 
 test: ## Test the code
-	docker run -it --rm -v "${PWD}/quarto:/quarto" php bin/phpunit
+	docker-compose run --no-deps --rm php bin/phpunit
