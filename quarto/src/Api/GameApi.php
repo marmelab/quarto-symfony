@@ -20,7 +20,7 @@ class GameApi {
                 $grid[$i][$j] = '.';
             }
         }
-        return new Game(0, $grid, true, 0);
+        return new Game(0, $grid, true, 0, []);
     }
 
     static function getAllPieces(Game $game) : Array {
@@ -50,13 +50,13 @@ class GameApi {
         $game->setSelectedPiece($id_piece);
     }
 
-    static function placePiece(Game $game, int $x, int $y) : array {
+    static function placePiece(Game $game, int $x, int $y) {
         $winningLine = GameApi::getWinningPosition($game, $x, $y, $game->getSelectedPiece());
         $grid = $game->getGrid();
         $grid[$y][$x] = $game->getSelectedPiece();
         $game->setGrid($grid);
         $game->setSelectedPiece(0);
-        return $winningLine;
+        $game->setWinningLine($winningLine);
     }
 
     static function getWinningPosition(Game $game, int $x, int $y, int $piece) : array {

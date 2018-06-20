@@ -12,14 +12,14 @@
         'gameId': game.getIdGame(), 
         'grid': game.getGrid(), 
         'pieceSelected' : game.getSelectedPiece(),
-        'winningLine' : winningLine} %}
+        'winningLine' : game.getWinningLine()} %}
     </div>
     <div>
       {% include 'pieces.html.twig' with {
         'gameId': game.getIdGame(), 
         'pieces': pieces, 
         'pieceSelected' : game.getSelectedPiece(),
-        'winningLine' : winningLine} %}
+        'winningLine' : game.getWinningLine()} %}
     </div>
     <div>
       {% include 'players.html.twig' with {
@@ -27,7 +27,7 @@
         'pieceSelected' : game.getSelectedPiece(),
         'player1Name' : 'Player 1 ',
         'player2Name' : 'Player 2',
-        'winningLine' : winningLine } %}
+        'winningLine' : game.getWinningLine()} %}
     </div>
   </div>
 {% endblock %}

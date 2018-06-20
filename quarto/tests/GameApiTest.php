@@ -15,7 +15,7 @@ class GameApiTest extends TestCase {
         array('.', '.', '.'),
         array('.', '.', '.'),
         array('.', '.', '.')
-      ), true, 0);
+      ), true, 0, []);
 
     $game = GameApi::new(3);
     $this->assertEquals($referenceGame, $game);
@@ -28,7 +28,7 @@ class GameApiTest extends TestCase {
       array('.', '.', '.', '.'),
       array('.', '.', '.', '.'),
       array('.', '.', '.', '.')
-    ), true, 0);
+    ), true, 0, []);
 
     $game= GameApi::new(4);
     $this->assertEquals($referenceGame, $game);

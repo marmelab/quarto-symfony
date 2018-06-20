@@ -32,8 +32,7 @@ class GameController extends Controller {
       
     return new Response($this->twig->render('game.html.twig', [
       'game' => $game,
-      'pieces' => GameApi::getAllPieces($game),
-      'winningLine' => []
+      'pieces' => GameApi::getAllPieces($game)
     ]));
   }
 
@@ -47,17 +46,8 @@ class GameController extends Controller {
 
   public function place($id_game, $x, $y) {
     $game = $this->gameRepository->findGameById($id_game);
-    $winningLine = GameApi::placePiece($game, $x, $y);
+    GameApi::placePiece($game, $x, $y);
     $this->gameRepository->save($game);
-    if (count($winningLine) > 0) {
-      return new Response($this->twig->render('game.html.twig', [
-        'game' => $game,
-        'pieces' => GameApi::getAllPieces($game),
-        'winningLine' => $winningLine
-      ]));
-    }
-    else {
-      return $this->redirectToRoute('game', array('id_game' => $game->getIdGame()));   
-    } 
+    return $this->redirectToRoute('game', array('id_game' => $game->getIdGame()));
   }
 }

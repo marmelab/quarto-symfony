@@ -15,7 +15,7 @@ class WinningTest extends TestCase {
         array('.', '.', '.', '.'),
         array('.', '.', '.', '.'),
         array('.', '.', '.', '.')
-      ), true, 0);
+      ), true, 0, []);
     $this->assertEquals(GameApi::getPiecesRaw($referenceGame, 3, 0), [7,2,10,4]);
   }
 
@@ -26,7 +26,7 @@ class WinningTest extends TestCase {
         array('.', '.', '.', '.'),
         array(3, '.', '.', '.'),
         array('.', '.', '.', '.')
-      ), true, 0);
+      ), true, 0, []);
     $this->assertEquals(GameApi::getPiecesColumn($referenceGame, 0, 3), [7,'.',3,'.']);
   }
 
@@ -37,7 +37,7 @@ class WinningTest extends TestCase {
         array('.', '.', '.', '.'),
         array('.', '.', 11, '.'),
         array('.', '.', '.', '.')
-      ), true, 0);
+      ), true, 0, []);
     $this->assertEquals(GameApi::getPiecesSlashDiag($referenceGame, 3, 3), [7,'.',11,'.']);
   }
 
@@ -48,7 +48,7 @@ class WinningTest extends TestCase {
         array('.', '.', '.', '.'),
         array('.', 12, '.', '.'),
         array(1, '.', '.', '.')
-      ), true, 0);
+      ), true, 0, []);
     $this->assertEquals(GameApi::getPiecesBackSlashDiag($referenceGame, 3, 0), [4, '.', 12,1]);
   }
 
@@ -63,7 +63,7 @@ class WinningTest extends TestCase {
           array('.', '.', 8, '.'),
           array(12, '.', 7, '.'),
           array('.', 16, '.', 11)
-        ), true, 4);
+        ), true, 4, []);
 
 
     $this->assertEquals(GameApi::getWinningPosition($referenceGame, 3, 0, 4), [1,2,3,4]);
