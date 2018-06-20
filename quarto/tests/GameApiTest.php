@@ -10,23 +10,19 @@ use App\Api\Piece;
 class GameApiTest extends TestCase {
 
   public function testNew3() {
-    $gameApi = new GameApi();
-
-    $referenceGame = new Game(1,
+    $referenceGame = new Game(0,
       array(
         array('.', '.', '.'),
         array('.', '.', '.'),
         array('.', '.', '.')
       ), true, 0);
 
-    $game= $gameApi->new(3);
+    $game = GameApi::new(3);
     $this->assertEquals($referenceGame, $game);
   }
 
   public function testNew4() {
-    $gameApi = new GameApi();
-
-    $referenceGame = new Game(1,
+    $referenceGame = new Game(0,
     array(
       array('.', '.', '.', '.'),
       array('.', '.', '.', '.'),
@@ -34,14 +30,12 @@ class GameApiTest extends TestCase {
       array('.', '.', '.', '.')
     ), true, 0);
 
-    $game= $gameApi->new(4);
+    $game= GameApi::new(4);
     $this->assertEquals($referenceGame, $game);
   }
 
   public function testGetAllPieces9() {
-    $gameApi = new GameApi();
-
-    $game= $gameApi->new(3);
+    $game = GameApi::new(3);
     $referencePieces = array(
       1 => new Piece(1, false),
       2 => new Piece(2, false),
@@ -54,13 +48,11 @@ class GameApiTest extends TestCase {
       9 => new Piece(9, false)
       );
 
-    $this->assertEquals($referencePieces, $gameApi->getAllPieces($game));
+    $this->assertEquals($referencePieces, GameApi::getAllPieces($game));
   }
 
   public function testGetAllPieces16() {
-    $gameApi = new GameApi();
-
-    $game= $gameApi->new(4);
+    $game = GameApi::new(4);
     $referencePieces = array(
         1 => new Piece(1, false),
         2 => new Piece(2, false),
@@ -80,13 +72,11 @@ class GameApiTest extends TestCase {
         16 => new Piece(16, false)
       );
 
-    $this->assertEquals($referencePieces, $gameApi->getAllPieces($game));
+    $this->assertEquals($referencePieces, GameApi::getAllPieces($game));
   }
 
   public function testGetAllPieces16With7thUsed() {
-    $gameApi = new GameApi();
-
-    $game = $gameApi->new(4);
+    $game = GameApi::new(4);
     $grid = $game->getGrid();
     $grid[1][0] = 7;
     $game->setGrid($grid);
@@ -109,24 +99,31 @@ class GameApiTest extends TestCase {
       16 => new Piece(16, false)
       );
 
-    $this->assertEquals($referencePieces, $gameApi->getAllPieces($game));
+    $this->assertEquals($referencePieces, GameApi::getAllPieces($game));
   }
 
   public function testChangeTurn() {
-    $gameApi = new GameApi();
+    $game = GameApi::new(4);
+    $referenceGame= GameApi::new(4);
 
-    $game= $gameApi->new(4);
-
-    $nextGame = $gameApi->changeTurn($game);
-    $this->assertEquals($nextGame->getIsPlayerOneTurn(), !$game->getIsPlayerOneTurn());
+    GameApi::changeTurn($game);
+    $this->assertEquals($referenceGame->getIsPlayerOneTurn(), !$game->getIsPlayerOneTurn());
   }
 
   public function testSelectNextPiece() {
-    $gameApi = new GameApi();
+    $game = GameApi::new(4);
 
-    $game= $gameApi->new(4);
+    GameApi::selectNextPiece($game, 9);
+    $this->assertEquals(9, $game->getSelectedPiece());
+  }
 
-    $nextGame = $gameApi->selectNextPiece($game, 9);
-    $this->assertEquals(9, $nextGame->getSelectedPiece());
+  public function testPlacePiece() {
+    $game = GameApi::new(4);
+    $game->setSelectedPiece(9);
+
+    GameApi::placePiece($game, 2, 1);
+    $grid = $game->getGrid();
+    $this->assertEquals(0, $game->getSelectedPiece());
+    $this->assertEquals(9, $grid[1][2]);
   }
 }
