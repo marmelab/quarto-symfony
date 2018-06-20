@@ -70,4 +70,32 @@ class GameTest extends TestCase {
     $game->setGrid($referenceArray);
     $this->assertEquals($referenceArray, $game->getGrid());
   }
+
+  public function testSetIdGame() {
+    $game = new Game(1,
+      array(
+        array(1, 2, 3),
+        array(4, 5, 6),
+        array(7, 8, 9)
+      ), true, 0, []);
+
+    $game->setIdGame(121);
+    $this->assertEquals(121, $game->getIdGame());
+  }
+
+  public function testSetWinningLine() {
+    $referenceArray = [1, 7, 3];
+
+    $game = new Game(1,
+      array(
+        array(1, 2, 3),
+        array(4, 5, 6),
+        array(7, 8, 9)
+      ), true, 0, []);
+
+    $game->setWinningLine($referenceArray);
+
+    $game->setGrid($referenceArray);
+    $this->assertEquals($referenceArray, $game->getWinningLine());
+  }
 }
