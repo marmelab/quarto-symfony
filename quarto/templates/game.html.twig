@@ -27,7 +27,7 @@
       {% include 'players.html.twig' with {
         'playerOneTurn': game.getIsPlayerOneTurn(), 
         'pieceSelected' : game.getSelectedPiece(),
-        'player1Name' : 'Player 1 ',
+        'player1Name' : 'Player 1',
         'player2Name' : 'Player 2',
         'winningLine' : game.getWinningLine(),
         'canPlay' : (playerId == 1 and game.getIsPlayerOneTurn()) or (playerId == 2 and game.getIsPlayerOneTurn() == false),
