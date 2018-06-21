@@ -4,6 +4,7 @@ namespace Tests\App\Entity;
 
 use PHPUnit\Framework\TestCase;
 use App\Entity\Game;
+use App\Api\Piece;
 
 class GameTest extends TestCase {
 
@@ -97,5 +98,124 @@ class GameTest extends TestCase {
 
     $game->setGrid($referenceArray);
     $this->assertEquals($referenceArray, $game->getWinningLine());
+  }
+
+
+  public function testNew3() {
+    $referenceGame = new Game(0,
+      array(
+        array('.', '.', '.'),
+        array('.', '.', '.'),
+        array('.', '.', '.')
+      ), true, 0, 1, []);
+
+    $game = Game::new(3);
+    $this->assertEquals($referenceGame, $game);
+  }
+
+  public function testNew4() {
+    $referenceGame = new Game(0,
+    array(
+      array('.', '.', '.', '.'),
+      array('.', '.', '.', '.'),
+      array('.', '.', '.', '.'),
+      array('.', '.', '.', '.')
+    ), true, 0, 1, []);
+
+    $game= Game::new(4);
+    $this->assertEquals($referenceGame, $game);
+  }
+
+  public function testGetAllPieces9() {
+    $game = Game::new(3);
+    $referencePieces = array(
+      1 => new Piece(1, false),
+      2 => new Piece(2, false),
+      3 => new Piece(3, false),
+      4 => new Piece(4, false),
+      5 => new Piece(5, false),
+      6 => new Piece(6, false),
+      7 => new Piece(7, false),
+      8 => new Piece(8, false),
+      9 => new Piece(9, false)
+      );
+
+    $this->assertEquals($referencePieces, $game->getAllPieces());
+  }
+
+  public function testGetAllPieces16() {
+    $game = Game::new(4);
+    $referencePieces = array(
+        1 => new Piece(1, false),
+        2 => new Piece(2, false),
+        3 => new Piece(3, false),
+        4 => new Piece(4, false),
+        5 => new Piece(5, false),
+        6 => new Piece(6, false),
+        7 => new Piece(7, false),
+        8 => new Piece(8, false),
+        9 => new Piece(9, false),
+        10 => new Piece(10, false),
+        11 => new Piece(11, false),
+        12 => new Piece(12, false),
+        13 => new Piece(13, false),
+        14 => new Piece(14, false),
+        15 => new Piece(15, false),
+        16 => new Piece(16, false)
+      );
+
+    $this->assertEquals($referencePieces, $game->getAllPieces());
+  }
+
+  public function testGetAllPieces16With7thUsed() {
+    $game = Game::new(4);
+    $grid = $game->getGrid();
+    $grid[1][0] = 7;
+    $game->setGrid($grid);
+    $referencePieces = array(
+      1 => new Piece(1, false),
+      2 => new Piece(2, false),
+      3 => new Piece(3, false),
+      4 => new Piece(4, false),
+      5 => new Piece(5, false),
+      6 => new Piece(6, false),
+      7 => new Piece(7, true),
+      8 => new Piece(8, false),
+      9 => new Piece(9, false),
+      10 => new Piece(10, false),
+      11 => new Piece(11, false),
+      12 => new Piece(12, false),
+      13 => new Piece(13, false),
+      14 => new Piece(14, false),
+      15 => new Piece(15, false),
+      16 => new Piece(16, false)
+      );
+
+    $this->assertEquals($referencePieces, $game->getAllPieces());
+  }
+
+  public function testChangeTurn() {
+    $game = Game::new(4);
+    $referenceGame= Game::new(4);
+
+    $game->changeTurn();
+    $this->assertEquals($referenceGame->getIsPlayerOneTurn(), !$game->getIsPlayerOneTurn());
+  }
+
+  public function testSelectNextPiece() {
+    $game = Game::new(4);
+
+    $game->selectNextPiece(9);
+    $this->assertEquals(9, $game->getSelectedPiece());
+  }
+
+  public function testPlacePiece() {
+    $game = Game::new(4);
+    $game->setSelectedPiece(9);
+
+    $game->placePiece(2, 1);
+    $grid = $game->getGrid();
+    $this->assertEquals(0, $game->getSelectedPiece());
+    $this->assertEquals(9, $grid[1][2]);
   }
 }

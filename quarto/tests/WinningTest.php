@@ -3,7 +3,6 @@ namespace Tests\App\Api;
 
 use PHPUnit\Framework\TestCase;
 use App\Entity\Game;
-use App\Api\GameApi;
 use App\Api\Piece;
 
 class WinningTest extends TestCase {
@@ -16,7 +15,7 @@ class WinningTest extends TestCase {
         array('.', '.', '.', '.'),
         array('.', '.', '.', '.')
       ), true, 0, 1, []);
-    $this->assertEquals(GameApi::getPiecesRaw($referenceGame, 3, 0), [7,2,10,4]);
+    $this->assertEquals($referenceGame->getPiecesRaw(3, 0), [7,2,10,4]);
   }
 
   public function testGetPiecesRawEmpty() {
@@ -27,7 +26,7 @@ class WinningTest extends TestCase {
         array(3, '.', '.', '.'),
         array('.', '.', '.', '.')
       ), true, 0, 1, []);
-    $this->assertEquals(GameApi::getPiecesRaw($referenceGame, 1, 1), ['.','.','.','.']);
+    $this->assertEquals($referenceGame->getPiecesRaw(1, 1), ['.','.','.','.']);
   }
 
   public function testGetPiecesColumn() {
@@ -38,7 +37,7 @@ class WinningTest extends TestCase {
         array(3, '.', '.', '.'),
         array('.', '.', '.', '.')
       ), true, 0, 1, []);
-    $this->assertEquals(GameApi::getPiecesColumn($referenceGame, 0, 3), [7,'.',3,'.']);
+    $this->assertEquals($referenceGame->getPiecesColumn(0, 3), [7,'.',3,'.']);
   }
 
   public function testGetPiecesSlashDiag() {
@@ -49,7 +48,7 @@ class WinningTest extends TestCase {
         array('.', '.', 11, '.'),
         array('.', '.', '.', '.')
       ), true, 0, 1, []);
-    $this->assertEquals(GameApi::getPiecesSlashDiag($referenceGame, 3, 3), [7,'.',11,'.']);
+    $this->assertEquals($referenceGame->getPiecesSlashDiag(3, 3), [7,'.',11,'.']);
   }
 
   public function testGetPiecesBackSlashDiag() {
@@ -60,7 +59,7 @@ class WinningTest extends TestCase {
         array('.', 12, '.', '.'),
         array(1, '.', '.', '.')
       ), true, 0, 1, []);
-    $this->assertEquals(GameApi::getPiecesBackSlashDiag($referenceGame, 3, 0), [4, '.', 12,1]);
+    $this->assertEquals($referenceGame->getPiecesBackSlashDiag(3, 0), [4, '.', 12,1]);
   }
 
   public function test1And2And3And4AlignedWins() {
@@ -89,7 +88,7 @@ class WinningTest extends TestCase {
         ), true, 4, 1, []);
 
 
-    $this->assertEquals(GameApi::getWinningPosition($referenceGame, 3, 0, 4), [1,2,3,4]);
+    $this->assertEquals($referenceGame->getWinningPosition(3, 0, 4), [1,2,3,4]);
   }
 
   public function test1And2And3And13AlignedDontWinsOnThisGrid() {
@@ -102,6 +101,6 @@ class WinningTest extends TestCase {
         ), true, 13, 1, []);
 
 
-    $this->assertEquals(GameApi::getWinningPosition($referenceGame, 3, 0, 13), []);
+    $this->assertEquals($referenceGame->getWinningPosition(3, 0, 13), []);
   }
 }

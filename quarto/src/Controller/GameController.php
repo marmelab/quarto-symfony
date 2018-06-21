@@ -15,16 +15,17 @@ class GameController extends Controller {
   public const GRID_SIZE = 4;
   private $twig;
   private $gameRepository;
+  private $gameManager;
 
   public function __construct(\Twig_Environment $twig, GameRepository $gameRepository) {
     $this->twig = $twig;
     $this->gameRepository = $gameRepository;
+    $this->gameManager = new GameManager($gameRepository);
   }
   
   public function new() {
-    $gameManager = new GameManager($this->gameRepository);
     $cookieManager = new CookieManager($this->gameRepository);
-    $game = $gameManager->newGame(self::GRID_SIZE);
+    $game = $this->gameManager->newGame(self::GRID_SIZE);
     $response = $this->redirectToRoute('game', array('idGame' => $game->getIdGame())); 
     $cookieManager->setPlayerId($response, $game, 1);
     return $response;    
@@ -49,16 +50,14 @@ class GameController extends Controller {
   }
 
   public function select(int $idGame, int $piece) {
-    $gameManager = new GameManager($this->gameRepository);
     $game = $this->gameRepository->findGameById($idGame);
-    $gameManager->playPieceSelection($game, $piece);
+    $this->gameManager->playPieceSelection($game, $piece);
     return $this->redirectToRoute('game', array('idGame' => $game->getIdGame()));    
   }
 
   public function place(int $idGame, int $x, int $y) {
-    $gameManager = new GameManager($this->gameRepository);
     $game = $this->gameRepository->findGameById($idGame);
-    $gameManager->playPiecePLacement($game, $x, $y);
+    $this->gameManager->playPiecePLacement($game, $x, $y);
     return $this->redirectToRoute('game', array('idGame' => $game->getIdGame()));
   }
 }
