@@ -1,10 +1,10 @@
 <div class="players">
   <div class="players-name">
       <div class="default-player {{ playerOneTurn ? 'active' : '' }} {{ playerId == 1 ? 'you' : '' }} z-depth-1">
-          <span class="player-value">{{player1Name}}</span>          
+          <span class="player-value">{{ playerId == 1 ? 'You ' : (playerId == NULL ? '' : 'Your opponent ') }}<br/>({{player1Name}})</span>          
       </div>
       <div class="default-player {{ playerOneTurn == false ? 'active' : '' }} {{  playerId == 2  ? 'you' : '' }} z-depth-1">
-          <span class="player-value">{{player2Name}}</span>          
+          <span class="player-value">{{ playerId == 2 ? 'You ' : (playerId == NULL ? '' : 'Your opponent ' )}}<br/>({{player2Name}})</span>          
       </div>
   </div>
   <div class="players-phase">
