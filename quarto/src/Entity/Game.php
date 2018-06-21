@@ -25,15 +25,19 @@ class Game {
     /** @ORM\Column(type="integer") */
     private $selected_piece;
 
+    /** @ORM\Column(type="integer") */
+    private $number_players;
+
     /** @ORM\Column(type="json_array") */
     private $winning_line;
 
-    public function __construct(int $id_game, Array $grid, bool $is_player_one_turn, int $selected_piece, Array $winning_line)
+    public function __construct(int $id_game, Array $grid, bool $is_player_one_turn, int $selected_piece, int $number_players, Array $winning_line)
     {
         $this->id_game = $id_game;
         $this->grid = $grid;
         $this->is_player_one_turn = $is_player_one_turn;
         $this->selected_piece = $selected_piece;
+        $this->number_players = $number_players;
         $this->winning_line = $winning_line;
     }
 
@@ -55,6 +59,11 @@ class Game {
     public function getSelectedPiece() : int
     {
         return $this->selected_piece;
+    }
+
+    public function getNumberPlayers() : int
+    {
+        return $this->number_players;
     }
 
     public function getWinningLine() : Array
@@ -82,6 +91,12 @@ class Game {
     public function setSelectedPiece(int $selected_piece) : Game
     {
         $this->selected_piece = $selected_piece;
+        return $this;
+    }
+
+    public function setNumberPlayers(int $number_players) : Game
+    {
+        $this->number_players = $number_players;
         return $this;
     }
 

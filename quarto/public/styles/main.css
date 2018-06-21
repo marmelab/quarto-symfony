@@ -151,3 +151,8 @@ a {
     cursor: pointer;
     opacity: 0.4;
 }
+
+.piece-image {
+    height: 50px;
+    width: 50px;
+}

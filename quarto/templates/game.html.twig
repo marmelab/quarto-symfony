@@ -12,14 +12,16 @@
         'gameId': game.getIdGame(), 
         'grid': game.getGrid(), 
         'pieceSelected' : game.getSelectedPiece(),
-        'winningLine' : game.getWinningLine()} %}
+        'winningLine' : game.getWinningLine(),
+        'canPlay' : (playerId == 1 and game.getIsPlayerOneTurn()) or (playerId == 2 and game.getIsPlayerOneTurn() == false)} %}
     </div>
     <div>
       {% include 'pieces.html.twig' with {
         'gameId': game.getIdGame(), 
         'pieces': pieces, 
         'pieceSelected' : game.getSelectedPiece(),
-        'winningLine' : game.getWinningLine()} %}
+        'winningLine' : game.getWinningLine(),
+        'canPlay' : (playerId == 1 and game.getIsPlayerOneTurn()) or (playerId == 2 and game.getIsPlayerOneTurn() == false)} %}
     </div>
     <div>
       {% include 'players.html.twig' with {

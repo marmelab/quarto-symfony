@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Api\GameApi;
 use App\Entity\Game;
 use App\Repository\GameRepository;
+use App\Api\CookieApi;
 
 class GameController extends Controller {
 
@@ -23,17 +24,32 @@ class GameController extends Controller {
     $game = GameApi::new(self::GRID_SIZE);
 
     $this->gameRepository->save($game);
-
-    return $this->redirectToRoute('game', array('id_game' => $game->getIdGame()));    
+    $response = $this->redirectToRoute('game', array('id_game' => $game->getIdGame())); 
+    CookieApi::setPlayerId($response, $game, 1);
+    return $response;    
   }
 
-  public function current($id_game) {
+  public function current(Request $request, $id_game) {
     $game = $this->gameRepository->findGameById($id_game);
-      
-    return new Response($this->twig->render('game.html.twig', [
+    $playerId = CookieApi::whichPlayerAmI($request, $id_game);
+    $setCookiePlayer2 = false;
+    if ($playerId == NULL && $game->getNumberPlayers() == 1) {
+      $playerId = 2;
+      $game->setNumberPlayers(2);
+      $this->gameRepository->save($game);
+      $setCookiePlayer2 = true;
+    }
+    $response = new Response($this->twig->render('game.html.twig', [
       'game' => $game,
-      'pieces' => GameApi::getAllPieces($game)
+      'pieces' => GameApi::getAllPieces($game),
+      'playerId' => $playerId
     ]));
+
+    if ($setCookiePlayer2) {
+      CookieApi::setPlayerId($response, $game, $playerId);
+    }
+      
+    return $response;
   }
 
   public function select($id_game, $piece) {

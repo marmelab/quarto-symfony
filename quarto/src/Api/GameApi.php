@@ -9,6 +9,8 @@ class GameApi {
 
     public function __construct() {
 
+
+
     }
 
     static function new(int $size) : Game {
@@ -20,7 +22,7 @@ class GameApi {
                 $grid[$i][$j] = '.';
             }
         }
-        return new Game(0, $grid, true, 0, []);
+        return new Game(0, $grid, true, 0, 1, []);
     }
 
     static function getAllPieces(Game $game) : Array {
