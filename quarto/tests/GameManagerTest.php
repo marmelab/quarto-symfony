@@ -4,12 +4,13 @@ namespace Tests\App\Api;
 
 use PHPUnit\Framework\TestCase;
 use App\Entity\Game;
-use App\Api\GameApi;
+use App\Api\GameManager;
 use App\Api\Piece;
 
-class GameApiTest extends TestCase {
+class GameManagerTest extends TestCase {
 
   public function testNew3() {
+    $gameManager = new GameManager(NULL);
     $referenceGame = new Game(0,
       array(
         array('.', '.', '.'),

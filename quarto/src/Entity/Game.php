@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Api\Piece;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -106,6 +107,82 @@ class Game {
         return $this;
     }
 
+    static function new(int $size) : Game {
+        $grid = [];
+
+        for ($i = 0; $i < $size; $i++) {
+            $grid[$i] = [];
+            for ($j = 0; $j < $size; $j++) {
+                $grid[$i][$j] = '.';
+            }
+        }
+
+        return new Game(0, $grid, true, 0, 1, []);
+    }
+
+    public function getAllPieces() : Array {
+        $pieces = [];
+        $size = count($this->grid);
+
+        if ($size > 0) {
+            for ($i = 1; $i <= $size * $size; $i++) {
+                $pieces[$i] = new Piece($i, false);
+                foreach($this->grid as $raw) {
+                    foreach($raw as $item) {
+                        if ($item === $i) {
+                            $pieces[$i]->setUsed(true);
+                        }
+                    }
+                }
+            }
+        }
+        return $pieces;
+    }
+
+    public function changeTurn() : Game {
+        $this->setIsPlayerOneTurn(!$this->getIsPlayerOneTurn());
+        return $this;
+    }
+
+    public function selectNextPiece(int $id_piece) : Game {
+        $this->setSelectedPiece($id_piece);
+        return $this;
+    }
+
+    public function placePiece(int $x, int $y) : Game {
+        $winningLine = $this->getWinningPosition($x, $y, $this->getSelectedPiece());
+        $grid = $this->getGrid();
+        $grid[$y][$x] = $this->getSelectedPiece();
+        $this->setGrid($grid);
+        $this->setSelectedPiece(0);
+        $this->setWinningLine($winningLine);
+        return $this;
+    }
+
+    public function getWinningPosition(int $x, int $y, int $piece) : array {
+        $testGame = clone $this;
+        $grid = $testGame->getGrid();
+        $grid[$y][$x] = $piece;
+        $testGame->setGrid($grid);
+        $piecesLine = $testGame->getPiecesRaw($x, $y);
+        if (Piece::isWinningLine($piecesLine)) {
+            return $piecesLine;
+        }
+        $piecesLine = $testGame->getPiecesColumn($x, $y);
+        if (Piece::isWinningLine($piecesLine)) {
+            return $piecesLine;
+        }
+        $piecesLine = $testGame->getPiecesSlashDiag($x, $y);
+        if (Piece::isWinningLine($piecesLine)) {
+            return $piecesLine;
+        }
+        $piecesLine = $testGame->getPiecesBackSlashDiag($x, $y);
+        if (Piece::isWinningLine($piecesLine)) {
+            return $piecesLine;
+        }
+        return [];
+    }
+
     public function getPiecesRaw(int $x, int $y) : array {
         return $this->grid[$y];
     }
@@ -130,9 +207,9 @@ class Game {
 
     public function getPiecesBackSlashDiag(int $x, int $y) : array {
         $piecesLine = [];
-        if ($x == count($this->grid)-$y-1) {
-            for ($i = 0; $i < count($this->grid); $i++) {
-                $piecesLine[$i] = $this->grid[$i][count($this->grid)-$i-1];
+        if ($x == count($this->getGrid())-$y-1) {
+            for ($i = 0; $i < count($this->getGrid()); $i++) {
+                $piecesLine[$i] = $this->getGrid()[$i][count($this->grid)-$i-1];
             }
         }
         return $piecesLine;

@@ -23,47 +23,42 @@ class GameController extends Controller {
   
   public function new() {
     $gameManager = new GameManager($this->gameRepository);
-    $cookieManager = new CookieManager($gameManager);
-    $gameManager->newGame(self::GRID_SIZE);
-    $gameManager->saveGame();
-    $response = $this->redirectToRoute('game', array('idGame' => $gameManager->getGame()->getIdGame())); 
-    $cookieManager->setPlayerId($response, 1);
+    $cookieManager = new CookieManager($this->gameRepository);
+    $game = $gameManager->newGame(self::GRID_SIZE);
+    $response = $this->redirectToRoute('game', array('idGame' => $game->getIdGame())); 
+    $cookieManager->setPlayerId($response, $game, 1);
     return $response;    
   }
 
-  public function current(Request $request, $idGame) {
-    $gameManager = new GameManager($this->gameRepository);
-    $cookieManager = new CookieManager($gameManager);
-    $gameManager->setGame($idGame);
-    $playerInfo = $cookieManager->tryCreatePlayer2($request);
+  public function current(Request $request, int $idGame) {
+    $cookieManager = new CookieManager($this->gameRepository);
+    $game = $this->gameRepository->findGameById($idGame);
+    $playerInfo = $cookieManager->tryCreatePlayer2($request, $game);
 
     $response = new Response($this->twig->render('game.html.twig', [
-      'game' => $gameManager->getGame(),
-      'pieces' => $gameManager->getAllPieces(),
+      'game' => $game,
+      'pieces' => $game->getAllPieces(),
       'playerId' => $playerInfo["playerId"]
     ]));
 
     if ($playerInfo["playerCreated"]) {
-      $cookieManager->setPlayerId($response, $playerInfo["playerId"]);
+      $cookieManager->setPlayerId($response, $game, $playerInfo["playerId"]);
     }
       
     return $response;
   }
 
-  public function select($idGame, $piece) {
+  public function select(int $idGame, int $piece) {
     $gameManager = new GameManager($this->gameRepository);
-    $gameManager->setGame($idGame);
-    $gameManager->selectNextPiece($piece);
-    $gameManager->changeTurn();
-    $gameManager->saveGame();
-    return $this->redirectToRoute('game', array('idGame' => $gameManager->getGame()->getIdGame()));    
+    $game = $this->gameRepository->findGameById($idGame);
+    $gameManager->playPieceSelection($game, $piece);
+    return $this->redirectToRoute('game', array('idGame' => $game->getIdGame()));    
   }
 
-  public function place($idGame, $x, $y) {
+  public function place(int $idGame, int $x, int $y) {
     $gameManager = new GameManager($this->gameRepository);
-    $gameManager->setGame($idGame);
-    $gameManager->placePiece($x, $y);
-    $gameManager->saveGame();
-    return $this->redirectToRoute('game', array('idGame' => $gameManager->getGame()->getIdGame()));
+    $game = $this->gameRepository->findGameById($idGame);
+    $gameManager->playPiecePLacement($game, $x, $y);
+    return $this->redirectToRoute('game', array('idGame' => $game->getIdGame()));
   }
 }
