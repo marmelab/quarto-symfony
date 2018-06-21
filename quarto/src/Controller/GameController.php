@@ -48,6 +48,6 @@ class GameController extends Controller {
     $game = $this->gameRepository->findGameById($id_game);
     GameApi::placePiece($game, $x, $y);
     $this->gameRepository->save($game);
-    return $this->redirectToRoute('game', array('id_game' => $game->getIdGame()));    
+    return $this->redirectToRoute('game', array('id_game' => $game->getIdGame()));
   }
 }

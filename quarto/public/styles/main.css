@@ -44,6 +44,10 @@ a {
     cursor: initial;
 }
 
+.grid-box.victory {
+    border-color: green;
+}
+
 .grid {
     padding: 5px;
     border-radius: 10px;
@@ -119,6 +123,12 @@ a {
     text-align: center;
 }
 
+.phase-value.victory {
+    font-weight: bold;
+    color:green;
+    font-size: 28px;
+}
+
 .board {
     display: flex;
     flex-direction:column;
@@ -127,4 +137,17 @@ a {
 	-webkit-box-align: center;
 
 	align-items: center;
+}
+
+.new-game {
+    padding: 10px;
+    margin: 2px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: antiquewhite;
+}
+
+.new-game:hover {
+    cursor: pointer;
+    opacity: 0.4;
 }
