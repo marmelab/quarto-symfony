@@ -1,9 +1,9 @@
 <div class="players">
   <div class="players-name">
-      <div class="default-player {{ playerOneTurn ? 'active' : '' }} z-depth-1">
+      <div class="default-player {{ playerOneTurn ? 'active' : '' }} {{ playerId == 1 ? 'you' : '' }} z-depth-1">
           <span class="player-value">{{player1Name}}</span>          
       </div>
-      <div class="default-player {{ playerOneTurn == false ? 'active' : '' }} z-depth-1">
+      <div class="default-player {{ playerOneTurn == false ? 'active' : '' }} {{  playerId == 2  ? 'you' : '' }} z-depth-1">
           <span class="player-value">{{player2Name}}</span>          
       </div>
   </div>
@@ -12,7 +12,11 @@
       <span class="phase-value victory">{{ playerOneTurn == true ? player1Name : player2Name }} Wins !!!!!!!</span>
       <br/>
       <br/>
-      <a class="new-game" href="{{ path('game_new') }}">Start a new game</a>
+      <a class="game-button" href="{{ path('game_new') }}">Start a new game</a>
+    {% elseif (playerId == NULL) %}
+      <span class="phase-value">Your are Spectator, just watch and enjoy</span>
+    {% elseif (canPlay == false) %}
+      <span class="phase-value">Meditate while waiting for your turn</span>
     {% elseif (pieceSelected > 0) %}
       <span class="phase-value">Place your piece on the board</span>
     {% else %}

@@ -6,6 +6,7 @@ body {
 a {
     text-decoration: none;
     color:inherit;
+    cursor: initial;
 }
 
 .grid-row {
@@ -108,13 +109,20 @@ a {
     border-radius: 10px;
 }
 
-.default-player.active {
-    font-weight: bold;
-    color:green;
+.default-player.you.active {
     border-color: rgb(209, 243, 209);
 }
 
-.default-player:not(.active) {
+.default-player.active:not(.you) {
+    border-color: firebrick;
+}
+
+.default-player.you {
+    font-weight: bold;
+    color:green;
+}
+
+.default-player:not(.you) {
     color:red;
 }
 
@@ -139,7 +147,7 @@ a {
 	align-items: center;
 }
 
-.new-game {
+.game-button {
     padding: 10px;
     margin: 2px;
     text-align: center;
@@ -147,7 +155,7 @@ a {
     background-color: antiquewhite;
 }
 
-.new-game:hover {
+.game-button:hover {
     cursor: pointer;
     opacity: 0.4;
 }
