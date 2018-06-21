@@ -7,15 +7,22 @@ game_new:
   controller: 'App\Controller\GameController::new'
 
 game:
-  path: /game/{id_game}
+  path: /game/{idGame}
   controller: 'App\Controller\GameController::current'
   requirements:
-        id_game: '\d+'
+        idGame: '\d+'
 
 game_select:
-  path: /game/{id_game}/select/{piece}
-  defaults: { _controller: 'App\Controller\GameController::select' }
+  path: /game/{idGame}/select/{piece}
+  controller: 'App\Controller\GameController::select'
+  requirements:
+        idGame: '\d+'
+        piece: '\d+'
 
 game_place:
-  path: /game/{id_game}/place/{x}/{y}
-  defaults: { _controller: 'App\Controller\GameController::place' }
+  path: /game/{idGame}/place/{x}/{y}
+  controller: 'App\Controller\GameController::place'
+  requirements:
+        idGame: '\d+'
+        x: '\d+'
+        y: '\d+'

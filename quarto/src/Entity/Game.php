@@ -61,7 +61,7 @@ class Game {
         return $this->selected_piece;
     }
 
-    public function getNumberPlayers() : int
+    public function getNumberOfPlayers() : int
     {
         return $this->number_players;
     }
@@ -94,7 +94,7 @@ class Game {
         return $this;
     }
 
-    public function setNumberPlayers(int $number_players) : Game
+    public function setNumberOfPlayers(int $number_players) : Game
     {
         $this->number_players = $number_players;
         return $this;
@@ -104,5 +104,37 @@ class Game {
     {
         $this->winning_line = $winning_line;
         return $this;
+    }
+
+    public function getPiecesRaw(int $x, int $y) : array {
+        return $this->grid[$y];
+    }
+
+    public function getPiecesColumn(int $x, int $y) : array {
+        $piecesLine = [];
+        for ($i = 0; $i < count($this->grid); $i++) {
+            $piecesLine[$i] = $this->grid[$i][$x];
+        }
+        return $piecesLine;
+    }
+
+    public function getPiecesSlashDiag(int $x, int $y) : array {
+        $piecesLine = [];
+        if ($x == $y) {
+            for ($i = 0; $i < count($this->grid); $i++) {
+                $piecesLine[$i] = $this->grid[$i][$i];
+            }
+        }
+        return $piecesLine;
+    }
+
+    public function getPiecesBackSlashDiag(int $x, int $y) : array {
+        $piecesLine = [];
+        if ($x == count($this->grid)-$y-1) {
+            for ($i = 0; $i < count($this->grid); $i++) {
+                $piecesLine[$i] = $this->grid[$i][count($this->grid)-$i-1];
+            }
+        }
+        return $piecesLine;
     }
 }
