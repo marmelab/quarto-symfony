@@ -5,49 +5,59 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use App\Api\GameApi;
+use App\Api\GameManager;
 use App\Entity\Game;
 use App\Repository\GameRepository;
+use App\Api\CookieManager;
 
 class GameController extends Controller {
 
   public const GRID_SIZE = 4;
   private $twig;
+  private $gameRepository;
+  private $gameManager;
 
   public function __construct(\Twig_Environment $twig, GameRepository $gameRepository) {
     $this->twig = $twig;
     $this->gameRepository = $gameRepository;
+    $this->gameManager = new GameManager($gameRepository);
   }
   
   public function new() {
-    $game = GameApi::new(self::GRID_SIZE);
-
-    $this->gameRepository->save($game);
-
-    return $this->redirectToRoute('game', array('id_game' => $game->getIdGame()));    
+    $cookieManager = new CookieManager($this->gameRepository);
+    $game = $this->gameManager->newGame(self::GRID_SIZE);
+    $response = $this->redirectToRoute('game', array('idGame' => $game->getIdGame())); 
+    $cookieManager->setPlayerId($response, $game, 1);
+    return $response;    
   }
 
-  public function current($id_game) {
-    $game = $this->gameRepository->findGameById($id_game);
-      
-    return new Response($this->twig->render('game.html.twig', [
+  public function current(Request $request, int $idGame) {
+    $cookieManager = new CookieManager($this->gameRepository);
+    $game = $this->gameRepository->findGameById($idGame);
+    $playerInfo = $cookieManager->tryCreatePlayer2($request, $game);
+
+    $response = new Response($this->twig->render('game.html.twig', [
       'game' => $game,
-      'pieces' => GameApi::getAllPieces($game)
+      'pieces' => $game->getAllPieces(),
+      'playerId' => $playerInfo["playerId"]
     ]));
+
+    if ($playerInfo["playerCreated"]) {
+      $cookieManager->setPlayerId($response, $game, $playerInfo["playerId"]);
+    }
+      
+    return $response;
   }
 
-  public function select($id_game, $piece) {
-    $game = $this->gameRepository->findGameById($id_game);
-    GameApi::selectNextPiece($game, $piece);
-    GameApi::changeTurn($game);
-    $this->gameRepository->save($game);
-    return $this->redirectToRoute('game', array('id_game' => $game->getIdGame()));    
+  public function select(int $idGame, int $piece) {
+    $game = $this->gameRepository->findGameById($idGame);
+    $this->gameManager->playPieceSelection($game, $piece);
+    return $this->redirectToRoute('game', array('idGame' => $game->getIdGame()));    
   }
 
-  public function place($id_game, $x, $y) {
-    $game = $this->gameRepository->findGameById($id_game);
-    GameApi::placePiece($game, $x, $y);
-    $this->gameRepository->save($game);
-    return $this->redirectToRoute('game', array('id_game' => $game->getIdGame()));
+  public function place(int $idGame, int $x, int $y) {
+    $game = $this->gameRepository->findGameById($idGame);
+    $this->gameManager->playPiecePLacement($game, $x, $y);
+    return $this->redirectToRoute('game', array('idGame' => $game->getIdGame()));
   }
 }

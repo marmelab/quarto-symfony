@@ -1,8 +1,8 @@
 <div class="pieces-row {{ pieceSelected > 0 ? 'unclicable' : '' }}">
   {% for piece in pieces %}
-    <a href="{{ (pieceSelected > 0 or piece.used == true or winningLine|length > 0) ? '#' :  path('game_select', {'id_game': gameId, 'piece': piece.id}) }}">
-      <div class="default-box piece-box {{ piece.used ? 'used' : '' }} {{ piece.id == pieceSelected ? 'selected' : '' }} {{ pieceSelected > 0 or piece.used == true or winningLine|length > 0 ? 'unclicable' : '' }} z-depth-1">
-          <span class="piece-value">{{piece.id}}</span>        
+    <a href="{{ (canPlay == false or pieceSelected > 0 or piece.used == true or winningLine|length > 0) ? '#' :  path('game_select', {'idGame': gameId, 'piece': piece.id}) }}">
+      <div class="default-box piece-box piece-shape-1 {{ piece.used ? 'used' : '' }} {{ piece.id == pieceSelected ? 'selected' : '' }} {{canPlay == false or pieceSelected > 0 or piece.used == true or winningLine|length > 0 ? 'unclicable' : '' }} z-depth-1">
+          <img class="piece-image" src="{{ asset('images/piece-image' ~ piece.id ~ '.png') }}" alt="Piece {{piece.id}}" /> 
       </div>
     </a>  
   {% endfor %}

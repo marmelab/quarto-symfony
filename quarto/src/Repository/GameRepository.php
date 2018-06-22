@@ -5,6 +5,7 @@ namespace App\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Game;
+use App\Api\GameLogic;
 
 class GameRepository extends EntityRepository {
 
@@ -24,7 +25,7 @@ class GameRepository extends EntityRepository {
     $this->em->flush();
   }
   
-  public function save(Game $game) {
+  public function save($game) {
     $this->em->persist($game);
     $this->em->flush();
   }

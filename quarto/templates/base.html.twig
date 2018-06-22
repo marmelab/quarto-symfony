@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Refresh" content="5">
     <title>{% block pageTitle %}Quarto online!{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}" />
     {% block refresh %}{% endblock %}
@@ -12,7 +13,7 @@
   <body>
     <nav class="blue lighten-1" role="navigation">
       <div class="nav-wrapper container">
-        <a href="{{ path('index') }}" class="brand-logo">Quarto online!</a>
+        <a class="game-button" href="{{ path('index') }}" class="brand-logo">Quarto online!</a>
       </div>
     </nav>
     <section class="container">
