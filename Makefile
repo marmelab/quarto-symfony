@@ -25,3 +25,6 @@ stop: ## Stop the server
 
 test: ## Test the code
 	docker-compose run --no-deps --rm php bin/phpunit
+
+deploy: ## Deploy on AWS
+	scp -v -r ./* quarto-go:~/quarto-symphony/

@@ -15,7 +15,7 @@ class GameRepository extends EntityRepository {
     $this->em = $em;
   }
 
-  public function findGameById(string $id) : Game {
+  public function findGameById(string $id) {
     return $this->em->find('App:Game', $id);
   }
 
