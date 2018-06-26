@@ -27,6 +27,31 @@ game_place:
         x: '\d+'
         y: '\d+'
 
+gameapi_new:
+  path: /gameapi
+  controller: 'App\Controller\GameApiController::new'
+
+gameapi:
+  path: /gameapi/{idGame}
+  controller: 'App\Controller\GameApiController::current'
+  requirements:
+        idGame: '\d+'
+
+gameapi_select:
+  path: /gameapi/{idGame}/select/{piece}
+  controller: 'App\Controller\GameApiController::select'
+  requirements:
+        idGame: '\d+'
+        piece: '\d+'
+
+gameapi_place:
+  path: /gameapi/{idGame}/place/{x}/{y}
+  controller: 'App\Controller\GameApiController::place'
+  requirements:
+        idGame: '\d+'
+        x: '\d+'
+        y: '\d+'
+
 all:
   path: /{req}
   defaults: { _controller: 'App\Controller\DefaultController::index' }
