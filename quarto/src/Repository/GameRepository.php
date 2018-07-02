@@ -19,6 +19,11 @@ class GameRepository extends EntityRepository {
     return $this->em->find('App:Game', $id);
   }
 
+  public function getOpenedGamesList(string $playerToken) {
+    $query = $this->em->createQuery("SELECT g FROM App:Game g WHERE g.number_players = 1 AND g.closed=false");
+    return $query->getResult();
+  }
+
   public function remove(string $id) {
     $game = $this->em->getReference('App:Game', $id);
     $this->em->remove($game);

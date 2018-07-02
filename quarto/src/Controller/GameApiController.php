@@ -59,6 +59,19 @@ class GameApiController extends Controller {
     }
   }
 
+  public function list() {
+    $games = $this->gameRepository->getOpenedGamesList("player");
+    if ($games != NULL) {
+      $jsonContent = $this->serializer->serialize($games, 'json');
+      $response = new JsonResponse($jsonContent, 200, [], true);
+      return $response;
+
+    }
+    else {
+      return new JsonResponse("{}", 404, [], true);
+    }
+  }
+
   public function select(int $idGame, int $piece) {
     $game = $this->gameRepository->findGameById($idGame);
     if ($game != NULL && 
