@@ -14,7 +14,7 @@ class GameTest extends TestCase {
         array(1, 2, 3),
         array(4, 5, 6),
         array(7, 8, 9)
-      ), true, 0, 1, []);
+      ), true, 0, 1, [], false);
 
     $game->setIsPlayerOneTurn(false);
     $this->assertEquals(false, $game->getIsPlayerOneTurn());
@@ -26,7 +26,7 @@ class GameTest extends TestCase {
         array(1, 2, 3),
         array(4, 5, 6),
         array(7, 8, 9)
-      ), false, 0, 1, []);
+      ), false, 0, 1, [], false);
 
     $game->setIsPlayerOneTurn(true);
     $this->assertEquals(true, $game->getIsPlayerOneTurn());
@@ -38,7 +38,7 @@ class GameTest extends TestCase {
         array(1, 2, 3),
         array(4, 5, 6),
         array(7, 8, 9)
-      ), true, 0, 1, []);
+      ), true, 0, 1, [], false);
 
     $game->setSelectedPiece(6);
     $this->assertEquals(6, $game->getSelectedPiece());
@@ -50,7 +50,7 @@ class GameTest extends TestCase {
         array(1, 2, 3),
         array(4, 5, 6),
         array(7, 8, 9)
-      ), true, 9, 1, []);
+      ), true, 9, 1, [], false);
 
     $game->setSelectedPiece(0);
     $this->assertEquals(0, $game->getSelectedPiece());
@@ -66,7 +66,7 @@ class GameTest extends TestCase {
         array(1, 2, 3),
         array(4, 5, 6),
         array(7, 8, 9)
-      ), true, 0, 1, []);
+      ), true, 0, 1, [], false);
 
     $game->setGrid($referenceArray);
     $this->assertEquals($referenceArray, $game->getGrid());
@@ -78,7 +78,7 @@ class GameTest extends TestCase {
         array(1, 2, 3),
         array(4, 5, 6),
         array(7, 8, 9)
-      ), true, 0, 1, []);
+      ), true, 0, 1, [], false);
 
     $game->setIdGame(121);
     $this->assertEquals(121, $game->getIdGame());
@@ -92,7 +92,7 @@ class GameTest extends TestCase {
         array(1, 2, 3),
         array(4, 5, 6),
         array(7, 8, 9)
-      ), true, 0, 1, []);
+      ), true, 0, 1, [], false);
 
     $game->setWinningLine($referenceArray);
 
@@ -107,7 +107,7 @@ class GameTest extends TestCase {
         array('.', '.', '.'),
         array('.', '.', '.'),
         array('.', '.', '.')
-      ), true, 0, 1, []);
+      ), true, 0, 1, [], false);
 
     $game = Game::new(3);
     $this->assertEquals($referenceGame, $game);
@@ -120,7 +120,7 @@ class GameTest extends TestCase {
       array('.', '.', '.', '.'),
       array('.', '.', '.', '.'),
       array('.', '.', '.', '.')
-    ), true, 0, 1, []);
+    ), true, 0, 1, [], false);
 
     $game= Game::new(4);
     $this->assertEquals($referenceGame, $game);

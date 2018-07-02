@@ -21,7 +21,7 @@ class GameManagerTest extends TestCase {
       array('.', '.', '.', '.'),
       array('.', '.', '.', '.'),
       array('.', '.', '.', '.')
-    ), true, 0, 1, []);
+    ), true, 0, 1, [], false);
     $this->assertEquals($referenceGame, $game);
   }
 
@@ -34,7 +34,7 @@ class GameManagerTest extends TestCase {
       array('.', '.', '.', '.'),
       array('.', '.', '.', '.'),
       array('.', '.', '.', '.')
-    ), true, 0, 1, []);
+    ), true, 0, 1, [], false);
     $gameManager->playPieceSelection($game, 7);
     $this->assertEquals(7, $game->getSelectedPiece());
   }
@@ -48,7 +48,7 @@ class GameManagerTest extends TestCase {
       array('.', '.', '.', '.'),
       array('.', '.', '.', '.'),
       array('.', '.', '.', '.')
-    ), true, 10, 1, []);
+    ), true, 10, 1, [], false);
     $gameManager->playPiecePLacement($game, 3, 0);
     $this->assertEquals(10, $game->getGrid()[0][3]);
   }
