@@ -18,7 +18,7 @@
         'grid': game.getGrid(), 
         'pieceSelected' : game.getSelectedPiece(),
         'winningLine' : game.getWinningLine(),
-        'canPlay' : canPlay} %}
+        'canPlay' : canPlay} only %}
     </div>
     <div>
       {% include 'pieces.html.twig' with {
@@ -26,7 +26,7 @@
         'pieces': pieces, 
         'pieceSelected' : game.getSelectedPiece(),
         'winningLine' : game.getWinningLine(),
-        'canPlay' : canPlay} %}
+        'canPlay' : canPlay} only %}
     </div>
     <div>
       {% include 'players.html.twig' with {
@@ -36,7 +36,7 @@
         'player2Name' : 'Player 2',
         'winningLine' : game.getWinningLine(),
         'canPlay' : canPlay,
-        'playerId' : playerId} %}
+        'playerId' : playerId} only %}
     </div>
   </div>
 {% endblock %}

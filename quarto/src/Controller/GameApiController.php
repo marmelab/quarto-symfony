@@ -74,9 +74,7 @@ class GameApiController extends Controller {
       return $response;
 
     }
-    else {
-      return new JsonResponse("{}", 200, [], true);
-    }
+    return new JsonResponse("{}", 200, [], true);
   }
 
   public function currentList(Request $request) {
@@ -91,9 +89,7 @@ class GameApiController extends Controller {
       return $response;
 
     }
-    else {
-      return new JsonResponse("{}", 200, [], true);
-    }
+    return new JsonResponse("{}", 200, [], true);
   }
 
   public function onlywatchList(Request $request) {
