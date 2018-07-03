@@ -44,6 +44,8 @@ class Game {
 
     public $locked;
 
+    public $watch_only;
+
     public function __construct(int $id_game, Array $grid, bool $is_player_one_turn, int $selected_piece, int $number_players, Array $winning_line, bool $closed=false, string $token_player_one='', string $token_player_two='')
     {
         $this->id_game = $id_game;
@@ -288,6 +290,9 @@ class Game {
         if (($this->getTokenPlayerOne() != $token && $this->getIsPlayerOneTurn())
             || ($this->getTokenPlayerTwo() != $token && !$this->getIsPlayerOneTurn())) {
             $this->locked = true;
+            if ($this->getTokenPlayerOne() != $token && $this->getTokenPlayerTwo() != $token) {
+                $this->watch_only = true;
+            }
         }
         else {
             $this->locked = false;

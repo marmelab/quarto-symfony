@@ -50,6 +50,7 @@ class GameApiController extends Controller {
         $this->gameRepository->save($game);
       }
       if ($registerContent == NULL) $registerContent = 0;
+      if ($token == NULL) $token = '';
       $jsonContent = $this->serializer->serialize($game->securiseGameBeforeReturn($token, $registerContent), 'json');
       $response = new JsonResponse($jsonContent, 200, [], true);
 
@@ -120,6 +121,7 @@ class GameApiController extends Controller {
     $piece <= self::GRID_SIZE * self::GRID_SIZE &&
     $this->gameManager->playPieceSelection($game, $piece)
     ) {
+      if ($token == NULL) $token = '';
       $jsonContent = $this->serializer->serialize($game->securiseGameBeforeReturn($token), 'json');
       return new JsonResponse($jsonContent, 200, [], true); 
     }
@@ -138,6 +140,7 @@ class GameApiController extends Controller {
     $y < self::GRID_SIZE &&
     $this->gameManager->playPiecePLacement($game, $x, $y)
     ) {
+      if ($token == NULL) $token = '';
       $jsonContent = $this->serializer->serialize($game->securiseGameBeforeReturn($token), 'json');
       return new JsonResponse($jsonContent, 200, [], true);
     }
