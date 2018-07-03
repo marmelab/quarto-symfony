@@ -10,9 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use App\Api\GameManager;
+use App\Api\TokenManager;
 use App\Entity\Game;
 use App\Repository\GameRepository;
-use App\Api\CookieManager;
 
 class GameApiController extends Controller {
 
@@ -32,25 +32,26 @@ class GameApiController extends Controller {
   }
   
   public function new() {
-    $cookieManager = new CookieManager($this->gameRepository);
     $game = $this->gameManager->newGame(self::GRID_SIZE);
     $jsonContent = $this->serializer->serialize($game, 'json');
     $response = new JsonResponse($jsonContent, 200, [], true);
-    $cookieManager->setPlayerId($response, $game, 1);
     return $response;    
   }
 
   public function current(Request $request, int $idGame) {
-    $cookieManager = new CookieManager($this->gameRepository);
+    $register = $request->query->get('register');
+    $registerContent = json_decode($register, true);
+    $token = $request->query->get('token');
     $game = $this->gameRepository->findGameById($idGame);
     if ($game != NULL) {
-      $playerInfo = $cookieManager->tryCreatePlayer2($request, $game);
-      $jsonContent = $this->serializer->serialize($game, 'json');
+      if ($registerContent==1) {
+        $game->setTokenPlayerTwo(TokenManager::generate())->setNumberOfPlayers(2);
+        $this->gameRepository->save($game);
+      }
+      if ($registerContent == NULL) $registerContent = 0;
+      $jsonContent = $this->serializer->serialize($game->securiseGameBeforeReturn($token, $registerContent), 'json');
       $response = new JsonResponse($jsonContent, 200, [], true);
 
-      if ($playerInfo["playerCreated"]) {
-        $cookieManager->setPlayerId($response, $game, $playerInfo["playerId"]);
-      }
       return $response;
 
     }
@@ -59,27 +60,66 @@ class GameApiController extends Controller {
     }
   }
 
-  public function list() {
-    $games = $this->gameRepository->getOpenedGamesList("player");
+  public function openedList(Request $request) {
+    $tokenList = $request->query->get('tokenList');
+    $tokenContent = json_decode($tokenList, true);
+    if (!$tokenContent) $tokenContent = [];
+    $games = $this->gameRepository->getOpenedGamesList($tokenContent);
     if ($games != NULL) {
+      
       $jsonContent = $this->serializer->serialize($games, 'json');
       $response = new JsonResponse($jsonContent, 200, [], true);
       return $response;
 
     }
     else {
-      return new JsonResponse("{}", 404, [], true);
+      return new JsonResponse("{}", 200, [], true);
     }
   }
 
-  public function select(int $idGame, int $piece) {
+  public function currentList(Request $request) {
+    $tokenList = $request->query->get('tokenList');
+    $tokenContent = json_decode($tokenList, true);
+    if (!$tokenContent) $tokenContent = [];
+    $games = $this->gameRepository->getCurrentGamesList($tokenContent);
+    if ($games != NULL) {
+      
+      $jsonContent = $this->serializer->serialize($games, 'json');
+      $response = new JsonResponse($jsonContent, 200, [], true);
+      return $response;
+
+    }
+    else {
+      return new JsonResponse("{}", 200, [], true);
+    }
+  }
+
+  public function onlywatchList(Request $request) {
+    $tokenList = $request->query->get('tokenList');
+    $tokenContent = json_decode($tokenList, true);
+    if (!$tokenContent) $tokenContent = [];
+    $games = $this->gameRepository->getOnlySpectateGamesList($tokenContent);
+    if ($games != NULL) {
+      
+      $jsonContent = $this->serializer->serialize($games, 'json');
+      $response = new JsonResponse($jsonContent, 200, [], true);
+      return $response;
+
+    }
+    else {
+      return new JsonResponse("{}", 200, [], true);
+    }
+  }
+
+  public function select(Request $request, int $idGame, int $piece) {
+    $token = $request->query->get('token');
     $game = $this->gameRepository->findGameById($idGame);
     if ($game != NULL && 
     $piece > 0 &&
     $piece <= self::GRID_SIZE * self::GRID_SIZE &&
     $this->gameManager->playPieceSelection($game, $piece)
     ) {
-      $jsonContent = $this->serializer->serialize($game, 'json');
+      $jsonContent = $this->serializer->serialize($game->securiseGameBeforeReturn($token), 'json');
       return new JsonResponse($jsonContent, 200, [], true); 
     }
     else {
@@ -87,7 +127,8 @@ class GameApiController extends Controller {
     } 
   }
 
-  public function place(int $idGame, int $x, int $y) {
+  public function place(Request $request, int $idGame, int $x, int $y) {
+    $token = $request->query->get('token');
     $game = $this->gameRepository->findGameById($idGame);
     if ($game != NULL && 
     $x >= 0 &&
@@ -96,7 +137,7 @@ class GameApiController extends Controller {
     $y < self::GRID_SIZE &&
     $this->gameManager->playPiecePLacement($game, $x, $y)
     ) {
-      $jsonContent = $this->serializer->serialize($game, 'json');
+      $jsonContent = $this->serializer->serialize($game->securiseGameBeforeReturn($token), 'json');
       return new JsonResponse($jsonContent, 200, [], true);
     }
     else {

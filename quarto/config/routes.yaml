@@ -31,9 +31,17 @@ gameapi_new:
   path: /gameapi
   controller: 'App\Controller\GameApiController::new'
 
-gameapi_list:
-  path: /gameapi/list
-  controller: 'App\Controller\GameApiController::list'
+gameapi_openedlist:
+  path: /gameapi/openedlist
+  controller: 'App\Controller\GameApiController::openedList'
+
+gameapi_currentlist:
+  path: /gameapi/currentlist
+  controller: 'App\Controller\GameApiController::currentList'
+
+gameapi_onlywatchList:
+  path: /gameapi/onlywatchlist
+  controller: 'App\Controller\GameApiController::onlywatchList'
 
 gameapi:
   path: /gameapi/{idGame}
