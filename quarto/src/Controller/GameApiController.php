@@ -46,6 +46,7 @@ class GameApiController extends Controller {
     if ($game != NULL) {
       if ($registerContent==1) {
         $game->setTokenPlayerTwo(TokenManager::generate())->setNumberOfPlayers(2);
+        $token = $game->getTokenPlayerTwo();
         $this->gameRepository->save($game);
       }
       if ($registerContent == NULL) $registerContent = 0;
