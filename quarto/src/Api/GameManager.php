@@ -49,11 +49,13 @@ class GameManager {
         $this->gameRepository->save($game);
         return true;
     }
-
+    
     public function submitToAI(Game $game) : bool {
+        $aiApiUrl = "http://192.168.86.248:8080/suggestMove";
+
         $jsonContent = $game->toAIGame()->toValidJsonString();
 
-        $result = ApiConsumerService::CallAPI("POST", "http://192.168.86.248:8080/suggestMove", $jsonContent);
+        $result = ApiConsumerService::CallAPI("POST", $aiApiUrl, $jsonContent);
         $resultJsonContent = json_decode($result, true);
        
         $move = $resultJsonContent['Move'];
