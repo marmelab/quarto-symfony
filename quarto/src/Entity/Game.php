@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Api\TokenManager;
 use App\Api\Piece;
+use App\Api\AIGame;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -334,4 +335,17 @@ class Game {
         }
         return $this;
     }
+
+    public function toAIGame() : AIGame {
+        return new AIGame($this->grid, $this->selected_piece, []);
+    }
+
+    /* public function importAIGame(AIGame $aiGame) : Game {
+        $grid = $this->getGrid();
+
+        $this->setGrid($aiGame.getGrid());
+        $this->setGrid($grid);
+        $this->setSelectedPiece($aiGame.getPiece());
+        return $this;
+    } */
 }

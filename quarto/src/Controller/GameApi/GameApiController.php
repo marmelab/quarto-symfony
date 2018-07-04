@@ -132,4 +132,19 @@ class GameApiController extends Controller {
     }
     return new JsonResponse("{}", 404, [], true);
   }
+
+  public function submitToAI(Request $request, int $idGame) {
+    $token = $request->query->get('token');
+    $game = $this->gameRepository->findGameById($idGame);
+    if ($game != NULL && 
+    $this->gameManager->submitToAI($game)
+    ) {
+      if ($token == NULL) $token = '';
+      $jsonContent = $this->serializer->serialize($game->winningInformation($token)->securiseGameBeforeReturn($token), 'json');
+      return new JsonResponse($jsonContent, 200, [], true);
+    }
+    else {
+      return new JsonResponse("{}", 404, [], true);
+    }
+  }
 }

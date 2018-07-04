@@ -5,6 +5,8 @@ namespace App\Api;
 use App\Entity\Game;
 use App\Repository\GameRepository;
 use App\Api\Piece;
+use App\Api\AIGame;
+use App\Api\ApiConsumerService;
 
 class GameManager {
 
@@ -37,6 +39,20 @@ class GameManager {
         }
         $game->placePiece($x, $y);
         $this->gameRepository->save($game);
+        return true;
+    }
+
+    public function submitToAI(Game $game) : bool {
+        $jsonContent = $game->toAIGame()->toValidJsonString();
+
+        $result = ApiConsumerService::CallAPI("POST", "http://192.168.86.248:8080/suggestMove", $jsonContent);
+        $resultJsonContent = json_decode($result, true);
+       
+        $move = $resultJsonContent['Move'];
+        $piece = $resultJsonContent['Piece'];
+
+        $this->playPiecePLacement($game, $move[1], $move[0]);
+        $this->playPieceSelection($game, $piece);
         return true;
     }
 }
