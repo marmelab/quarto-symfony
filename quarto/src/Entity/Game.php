@@ -31,6 +31,9 @@ class Game {
     /** @ORM\Column(type="integer") */
     private $number_players;
 
+    /** @ORM\Column(type="boolean") */
+    private $solo_game;
+
     /** @ORM\Column(type="json_array") */
     private $winning_line;
 
@@ -51,13 +54,14 @@ class Game {
 
     public $winner_id;
 
-    public function __construct(int $id_game, Array $grid, bool $is_player_one_turn, int $selected_piece, int $number_players, Array $winning_line, bool $closed=false, string $token_player_one='', string $token_player_two='')
+    public function __construct(int $id_game, Array $grid, bool $is_player_one_turn, int $selected_piece, int $number_players, bool $solo_game, Array $winning_line, bool $closed=false, string $token_player_one='', string $token_player_two='')
     {
         $this->id_game = $id_game;
         $this->grid = $grid;
         $this->is_player_one_turn = $is_player_one_turn;
         $this->selected_piece = $selected_piece;
         $this->number_players = $number_players;
+        $this->solo_game = $solo_game;
         $this->winning_line = $winning_line;
         $this->closed = $closed;
         $this->token_player_one = $token_player_one;
@@ -87,6 +91,11 @@ class Game {
     public function getNumberOfPlayers() : int
     {
         return $this->number_players;
+    }
+
+    public function getSoloGame() : bool
+    {
+        return $this->solo_game;
     }
 
     public function getWinningLine() : Array
@@ -138,6 +147,12 @@ class Game {
         return $this;
     }
 
+    public function setSoloGame(bool $solo_game) : Game
+    {
+        $this->solo_game = $solo_game;
+        return $this;
+    }
+
     public function setWinningLine(Array $winning_line) : Game
     {
         $this->winning_line = $winning_line;
@@ -174,7 +189,7 @@ class Game {
 
         $token = TokenManager::generate();
 
-        return new Game(0, $grid, true, 0, 1, [], false, $token);
+        return new Game(0, $grid, true, 0, 1, false, [], false, $token);
     }
 
     public function getAllPieces() : Array {

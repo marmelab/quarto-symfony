@@ -2,6 +2,10 @@ gameapi_new:
   path: /
   controller: 'App\Controller\GameApi\GameApiController::new'
 
+gameapi_new_solo:
+  path: /solo
+  controller: 'App\Controller\GameApi\GameApiController::newSolo'
+
 gameapi_openedlist:
   path: /openedlist
   controller: 'App\Controller\GameApi\GameApiController::openedList'
@@ -34,3 +38,9 @@ gameapi_place:
         idGame: '\d+'
         x: '\d+'
         y: '\d+'
+
+gameapi_submit_to_ai:
+  path: /{idGame}/submit
+  controller: 'App\Controller\GameApi\GameApiController::submitToAI'
+  requirements:
+        idGame: '\d+'

@@ -22,6 +22,14 @@ class GameManager {
         return $game;
     }
 
+    public function newGameSolo(int $size) : Game {
+        $game = $this->newGame($size);
+        $game->setNumberOfPlayers(2);
+        $game->setSoloGame(true);
+        $this->gameRepository->save($game);
+        return $game;
+    }
+
     public function playPieceSelection(Game $game, int $piece) : bool {
         if ($game->getSelectedPiece() != 0) {
             return false;

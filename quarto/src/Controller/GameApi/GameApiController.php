@@ -38,6 +38,13 @@ class GameApiController extends Controller {
     return $response;    
   }
 
+  public function newSolo() {
+    $game = $this->gameManager->newGameSolo(self::GRID_SIZE);
+    $jsonContent = $this->serializer->serialize($game, 'json');
+    $response = new JsonResponse($jsonContent, 200, [], true);
+    return $response;    
+  }
+
   public function current(Request $request, int $idGame) {
     $register = $request->query->get('register');
     $registerContent = json_decode($register, true);
