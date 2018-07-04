@@ -10,6 +10,12 @@ gameapi:
     resource: '../src/Controller/GameApi/gameApiRouting.yml'
     prefix:   /gameapi
 
+gameapi_submit_to_ai:
+  path: /gameapi/{idGame}/submit
+  controller: 'App\Controller\GameApiController::submitToAI'
+  requirements:
+        idGame: '\d+'
+
 all:
   path: /{req}
   defaults: { _controller: 'App\Controller\DefaultController::index' }
