@@ -63,6 +63,13 @@ class GameManager {
 
         $this->playPiecePLacement($game, $move[1], $move[0]);
         $this->playPieceSelection($game, $piece);
+
+        //Patch for API Go wich give back the hand after player even if it wins
+        //That leads to client to trust he win but in fact not
+        if ($game->getClosed() === true) {
+            $game->setIsPlayerOneTurn(false);
+            $this->gameRepository->save($game);
+        }
         return true;
     }
 }

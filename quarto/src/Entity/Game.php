@@ -354,13 +354,4 @@ class Game {
     public function toAIGame() : AIGame {
         return new AIGame($this->grid, $this->selected_piece, []);
     }
-
-    /* public function importAIGame(AIGame $aiGame) : Game {
-        $grid = $this->getGrid();
-
-        $this->setGrid($aiGame.getGrid());
-        $this->setGrid($grid);
-        $this->setSelectedPiece($aiGame.getPiece());
-        return $this;
-    } */
 }
