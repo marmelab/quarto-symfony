@@ -51,7 +51,8 @@ class GameManager {
     }
     
     public function submitToAI(Game $game) : bool {
-        $aiApiUrl = "http://192.168.86.248:8080/suggestMove";
+        //$aiApiUrl = "http://192.168.86.248:8080/suggestMove";
+        $aiApiUrl = "http://192.168.0.3:8080/suggestMove";
 
         $jsonContent = $game->toAIGame()->toValidJsonString();
 

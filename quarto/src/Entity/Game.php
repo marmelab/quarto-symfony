@@ -212,21 +212,15 @@ class Game {
     }
 
     public function getRemainingPieces() : Array {
-        $pieces = [];
-        $size = count($this->grid);
+        $remainingPieces = [];
+        $allPieces = $this->getAllPieces();
 
-        if ($size > 0) {
-            for ($i = 1; $i <= $size * $size; $i++) {
-                foreach($this->grid as $raw) {
-                    foreach($raw as $item) {
-                        if ($item !== $i) {
-                            $pieces[$i] = new Piece($i, false);
-                        }
-                    }
-                }
+        foreach($allPieces as $piece) {
+            if ($piece->getUsed() === false) {
+                $remainingPieces[$piece->getId()] = $piece;
             }
         }
-        return $pieces;
+        return $remainingPieces;
     }
 
     public function changeTurn() : Game {
@@ -353,5 +347,45 @@ class Game {
 
     public function toAIGame() : AIGame {
         return new AIGame($this->grid, $this->selected_piece, []);
+    }
+
+    public function getWinningPlaces() : Array {
+        $badPositions= [];
+        $gridSize = count($this->grid);
+        $j = 0;
+        if ($gridSize > 0) {
+            for ($y = 0; $y < $gridSize; $y++) {
+                for ($x = 0; $x < $gridSize; $x++) {
+                    if ($this->getWinningPosition($x, $y, $this->selected_piece) != [])
+                    {
+                        $badPositions[$j] = array($y, $x);
+                        $j ++;
+                    }
+                }
+            }
+        } 
+        return $badPositions;
+    }
+
+    public function getWinningPieces() : Array {
+        $badPieces = [];
+        $remainingPieces = $this->getRemainingPieces();
+        $gridSize = count($this->grid);
+        $j = 0;
+        foreach($remainingPieces as $remainingPiece) {
+            if ($gridSize > 0) {
+                for ($y = 0; $y < $gridSize; $y++) {
+                    for ($x = 0; $x < $gridSize; $x++) {
+                        if ($this->getWinningPosition($x, $y, $remainingPiece->getId()) != [])
+                        {
+                            $badPieces[$j] = $remainingPiece->getId();
+                            $j ++;
+                            break;
+                        }
+                    }
+                }
+            } 
+        }
+        return $badPieces;
     }
 }
