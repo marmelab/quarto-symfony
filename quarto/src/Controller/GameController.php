@@ -47,13 +47,9 @@ class GameController extends Controller {
       if ($playerInfo["playerCreated"]) {
         $cookieManager->setPlayerId($response, $game, $playerInfo["playerId"]);
       }
-        
       return $response;
-
     }
-    else {
-      return $this->redirectToRoute('all', array('req' => "error"));
-    }
+    return $this->redirectToRoute('all', array('req' => "error"));
   }
 
   public function select(int $idGame, int $piece) {
@@ -65,9 +61,7 @@ class GameController extends Controller {
     ) {
       return $this->redirectToRoute('game', array('idGame' => $game->getIdGame()));   
     }
-    else {
-      return $this->redirectToRoute('all', array('req' => "error"));
-    } 
+    return $this->redirectToRoute('all', array('req' => "error"));
   }
 
   public function place(int $idGame, int $x, int $y) {
@@ -81,8 +75,6 @@ class GameController extends Controller {
     ) {
       return $this->redirectToRoute('game', array('idGame' => $game->getIdGame()));
     }
-    else {
-      return $this->redirectToRoute('all', array('req' => "error"));
-    }
+    return $this->redirectToRoute('all', array('req' => "error"));
   }
 }

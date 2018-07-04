@@ -55,11 +55,8 @@ class GameApiController extends Controller {
       $response = new JsonResponse($jsonContent, 200, [], true);
 
       return $response;
-
     }
-    else {
-      return new JsonResponse("{}", 404, [], true);
-    }
+    return new JsonResponse("{}", 404, [], true);
   }
 
   public function openedList(Request $request) {
@@ -72,7 +69,6 @@ class GameApiController extends Controller {
       $jsonContent = $this->serializer->serialize($games, 'json');
       $response = new JsonResponse($jsonContent, 200, [], true);
       return $response;
-
     }
     return new JsonResponse("{}", 200, [], true);
   }
@@ -87,7 +83,6 @@ class GameApiController extends Controller {
       $jsonContent = $this->serializer->serialize($games, 'json');
       $response = new JsonResponse($jsonContent, 200, [], true);
       return $response;
-
     }
     return new JsonResponse("{}", 200, [], true);
   }
@@ -102,11 +97,8 @@ class GameApiController extends Controller {
       $jsonContent = $this->serializer->serialize($games, 'json');
       $response = new JsonResponse($jsonContent, 200, [], true);
       return $response;
-
     }
-    else {
-      return new JsonResponse("{}", 200, [], true);
-    }
+    return new JsonResponse("{}", 200, [], true);
   }
 
   public function select(Request $request, int $idGame, int $piece) {
@@ -121,9 +113,7 @@ class GameApiController extends Controller {
       $jsonContent = $this->serializer->serialize($game->securiseGameBeforeReturn($token), 'json');
       return new JsonResponse($jsonContent, 200, [], true); 
     }
-    else {
-      return new JsonResponse("{}", 404, [], true);
-    } 
+    return new JsonResponse("{}", 404, [], true);
   }
 
   public function place(Request $request, int $idGame, int $x, int $y) {
@@ -140,8 +130,6 @@ class GameApiController extends Controller {
       $jsonContent = $this->serializer->serialize($game->securiseGameBeforeReturn($token), 'json');
       return new JsonResponse($jsonContent, 200, [], true);
     }
-    else {
-      return new JsonResponse("{}", 404, [], true);
-    }
+    return new JsonResponse("{}", 404, [], true);
   }
 }

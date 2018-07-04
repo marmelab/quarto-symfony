@@ -286,7 +286,7 @@ class Game {
         return $piecesLine;
     }
 
-    public function securiseGameBeforeReturn(string $token, int $register = 0) : Game{
+    public function securiseGameBeforeReturn(string $token, int $register = 0) : Game {
         if (($this->getTokenPlayerOne() != $token && $this->getIsPlayerOneTurn())
             || ($this->getTokenPlayerTwo() != $token && !$this->getIsPlayerOneTurn())) {
             $this->locked = true;
