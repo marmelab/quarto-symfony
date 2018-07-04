@@ -1,0 +1,24 @@
+game_new:
+  path: /
+  controller: 'App\Controller\GamePage\GameController::new'
+
+game:
+  path: /{idGame}
+  controller: 'App\Controller\GamePage\GameController::current'
+  requirements:
+        idGame: '\d+'
+
+game_select:
+  path: /{idGame}/select/{piece}
+  controller: 'App\Controller\GamePage\GameController::select'
+  requirements:
+        idGame: '\d+'
+        piece: '\d+'
+
+game_place:
+  path: /{idGame}/place/{x}/{y}
+  controller: 'App\Controller\GamePage\GameController::place'
+  requirements:
+        idGame: '\d+'
+        x: '\d+'
+        y: '\d+'
