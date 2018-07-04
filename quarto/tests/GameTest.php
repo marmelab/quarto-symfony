@@ -110,6 +110,7 @@ class GameTest extends TestCase {
       ), true, 0, 1, [], false);
 
     $game = Game::new(3);
+    $referenceGame->setTokenPlayerOne($game->getTokenPlayerOne());
     $this->assertEquals($referenceGame, $game);
   }
 
@@ -123,6 +124,7 @@ class GameTest extends TestCase {
     ), true, 0, 1, [], false);
 
     $game= Game::new(4);
+    $referenceGame->setTokenPlayerOne($game->getTokenPlayerOne());
     $this->assertEquals($referenceGame, $game);
   }
 
