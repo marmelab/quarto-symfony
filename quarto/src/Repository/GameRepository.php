@@ -20,6 +20,9 @@ class GameRepository extends EntityRepository {
   }
 
   public function getOpenedGamesList(array $tokenList) {
+    if (count($tokenList) === 0) {
+      $tokenList=["NOTHING"];
+    }
     $query = $this->em->createQuery("SELECT g FROM App:Game g  " .
     "WHERE g.closed=false " .
     "AND g.number_players = 1 " .
@@ -43,6 +46,9 @@ class GameRepository extends EntityRepository {
   }
 
   public function getOnlySpectateGamesList(array $tokenList) {
+    if (count($tokenList) === 0) {
+      $tokenList=["NOTHING"];
+    }
     $query = $this->em->createQuery("SELECT g FROM App:Game g  " .
     "WHERE g.closed=false  " .
     "AND g.number_players = 2 " .
