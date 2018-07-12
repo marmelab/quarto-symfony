@@ -309,7 +309,7 @@ class Game {
             }
         }
         else {
-            $this->locked = false;
+            $this->locked = false; 
         }
         $this->setTokenPlayerOne('');
         if ($register!=1) {
