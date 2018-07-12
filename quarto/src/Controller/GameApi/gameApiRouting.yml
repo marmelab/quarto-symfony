@@ -1,0 +1,36 @@
+gameapi_new:
+  path: /
+  controller: 'App\Controller\GameApi\GameApiController::new'
+
+gameapi_openedlist:
+  path: /openedlist
+  controller: 'App\Controller\GameApi\GameApiController::openedList'
+
+gameapi_currentlist:
+  path: /currentlist
+  controller: 'App\Controller\GameApi\GameApiController::currentList'
+
+gameapi_onlywatchList:
+  path: /onlywatchlist
+  controller: 'App\Controller\GameApi\GameApiController::onlywatchList'
+
+gameapi:
+  path: /{idGame}
+  controller: 'App\Controller\GameApi\GameApiController::current'
+  requirements:
+        idGame: '\d+'
+
+gameapi_select:
+  path: /{idGame}/select/{piece}
+  controller: 'App\Controller\GameApi\GameApiController::select'
+  requirements:
+        idGame: '\d+'
+        piece: '\d+'
+
+gameapi_place:
+  path: /{idGame}/place/{x}/{y}
+  controller: 'App\Controller\GameApi\GameApiController::place'
+  requirements:
+        idGame: '\d+'
+        x: '\d+'
+        y: '\d+'

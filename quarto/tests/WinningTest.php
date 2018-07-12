@@ -14,7 +14,7 @@ class WinningTest extends TestCase {
         array('.', '.', '.', '.'),
         array('.', '.', '.', '.'),
         array('.', '.', '.', '.')
-      ), true, 0, 1, []);
+      ), true, 0, 1, [], false);
     $this->assertEquals($referenceGame->getPiecesRaw(3, 0), [7,2,10,4]);
   }
 
@@ -25,7 +25,7 @@ class WinningTest extends TestCase {
         array('.', '.', '.', '.'),
         array(3, '.', '.', '.'),
         array('.', '.', '.', '.')
-      ), true, 0, 1, []);
+      ), true, 0, 1, [], false);
     $this->assertEquals($referenceGame->getPiecesRaw(1, 1), ['.','.','.','.']);
   }
 
@@ -36,7 +36,7 @@ class WinningTest extends TestCase {
         array('.', '.', '.', '.'),
         array(3, '.', '.', '.'),
         array('.', '.', '.', '.')
-      ), true, 0, 1, []);
+      ), true, 0, 1, [], false);
     $this->assertEquals($referenceGame->getPiecesColumn(0, 3), [7,'.',3,'.']);
   }
 
@@ -47,7 +47,7 @@ class WinningTest extends TestCase {
         array('.', '.', '.', '.'),
         array('.', '.', 11, '.'),
         array('.', '.', '.', '.')
-      ), true, 0, 1, []);
+      ), true, 0, 1, [], false);
     $this->assertEquals($referenceGame->getPiecesSlashDiag(3, 3), [7,'.',11,'.']);
   }
 
@@ -58,7 +58,7 @@ class WinningTest extends TestCase {
         array('.', '.', '.', '.'),
         array('.', 12, '.', '.'),
         array(1, '.', '.', '.')
-      ), true, 0, 1, []);
+      ), true, 0, 1, [], false);
     $this->assertEquals($referenceGame->getPiecesBackSlashDiag(3, 0), [4, '.', 12,1]);
   }
 
@@ -85,7 +85,7 @@ class WinningTest extends TestCase {
           array('.', '.', 8, '.'),
           array(12, '.', 7, '.'),
           array('.', 16, '.', 11)
-        ), true, 4, 1, []);
+        ), true, 4, 1, [], false);
 
 
     $this->assertEquals($referenceGame->getWinningPosition(3, 0, 4), [1,2,3,4]);
@@ -98,7 +98,7 @@ class WinningTest extends TestCase {
           array('.', '.', 8, '.'),
           array(12, '.', 7, '.'),
           array('.', 16, '.', 11)
-        ), true, 13, 1, []);
+        ), true, 13, 1, [], false);
 
 
     $this->assertEquals($referenceGame->getWinningPosition(3, 0, 13), []);

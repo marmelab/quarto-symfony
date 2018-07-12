@@ -2,55 +2,13 @@ index:
   path: /
   defaults: { _controller: 'App\Controller\MainController::start' }
 
-game_new:
-  path: /game
-  controller: 'App\Controller\GameController::new'
-
 game:
-  path: /game/{idGame}
-  controller: 'App\Controller\GameController::current'
-  requirements:
-        idGame: '\d+'
-
-game_select:
-  path: /game/{idGame}/select/{piece}
-  controller: 'App\Controller\GameController::select'
-  requirements:
-        idGame: '\d+'
-        piece: '\d+'
-
-game_place:
-  path: /game/{idGame}/place/{x}/{y}
-  controller: 'App\Controller\GameController::place'
-  requirements:
-        idGame: '\d+'
-        x: '\d+'
-        y: '\d+'
-
-gameapi_new:
-  path: /gameapi
-  controller: 'App\Controller\GameApiController::new'
+    resource: '../src/Controller/GamePage/gameRouting.yml'
+    prefix:   /game
 
 gameapi:
-  path: /gameapi/{idGame}
-  controller: 'App\Controller\GameApiController::current'
-  requirements:
-        idGame: '\d+'
-
-gameapi_select:
-  path: /gameapi/{idGame}/select/{piece}
-  controller: 'App\Controller\GameApiController::select'
-  requirements:
-        idGame: '\d+'
-        piece: '\d+'
-
-gameapi_place:
-  path: /gameapi/{idGame}/place/{x}/{y}
-  controller: 'App\Controller\GameApiController::place'
-  requirements:
-        idGame: '\d+'
-        x: '\d+'
-        y: '\d+'
+    resource: '../src/Controller/GameApi/gameApiRouting.yml'
+    prefix:   /gameapi
 
 all:
   path: /{req}

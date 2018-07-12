@@ -1,41 +1,32 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\GamePage;
 
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use App\Api\GameManager;
 use App\Entity\Game;
 use App\Repository\GameRepository;
 use App\Api\CookieManager;
 
-class GameApiController extends Controller {
+class GameController extends Controller {
 
   public const GRID_SIZE = 4;
+  private $twig;
   private $gameRepository;
   private $gameManager;
-  private $serializer;
 
-  public function __construct(GameRepository $gameRepository) {
+  public function __construct(\Twig_Environment $twig, GameRepository $gameRepository) {
+    $this->twig = $twig;
     $this->gameRepository = $gameRepository;
     $this->gameManager = new GameManager($gameRepository);
-
-    $encoders = array(new XmlEncoder(), new JsonEncoder());
-    $normalizers = array(new ObjectNormalizer());
-
-    $this->serializer = new Serializer($normalizers, $encoders);
   }
   
   public function new() {
     $cookieManager = new CookieManager($this->gameRepository);
     $game = $this->gameManager->newGame(self::GRID_SIZE);
-    $jsonContent = $this->serializer->serialize($game, 'json');
-    $response = new JsonResponse($jsonContent, 200, [], true);
+    $response = $this->redirectToRoute('game', array('idGame' => $game->getIdGame())); 
     $cookieManager->setPlayerId($response, $game, 1);
     return $response;    
   }
@@ -45,18 +36,20 @@ class GameApiController extends Controller {
     $game = $this->gameRepository->findGameById($idGame);
     if ($game != NULL) {
       $playerInfo = $cookieManager->tryCreatePlayer2($request, $game);
-      $jsonContent = $this->serializer->serialize($game, 'json');
-      $response = new JsonResponse($jsonContent, 200, [], true);
+
+      $response = new Response($this->twig->render('game.html.twig', [
+        'game' => $game,
+        'pieces' => $game->getAllPieces(),
+        'canPlay' => ($playerInfo["playerId"] == 1 && $game->getIsPlayerOneTurn()) || ($playerInfo["playerId"] == 2 && $game->getIsPlayerOneTurn() == false),
+        'playerId' => $playerInfo["playerId"]
+      ]));
 
       if ($playerInfo["playerCreated"]) {
         $cookieManager->setPlayerId($response, $game, $playerInfo["playerId"]);
       }
       return $response;
-
     }
-    else {
-      return new JsonResponse("{}", 404, [], true);
-    }
+    return $this->redirectToRoute('all', array('req' => "error"));
   }
 
   public function select(int $idGame, int $piece) {
@@ -66,12 +59,9 @@ class GameApiController extends Controller {
     $piece <= self::GRID_SIZE * self::GRID_SIZE &&
     $this->gameManager->playPieceSelection($game, $piece)
     ) {
-      $jsonContent = $this->serializer->serialize($game, 'json');
-      return new JsonResponse($jsonContent, 200, [], true); 
+      return $this->redirectToRoute('game', array('idGame' => $game->getIdGame()));   
     }
-    else {
-      return new JsonResponse("{}", 404, [], true);
-    } 
+    return $this->redirectToRoute('all', array('req' => "error"));
   }
 
   public function place(int $idGame, int $x, int $y) {
@@ -83,11 +73,8 @@ class GameApiController extends Controller {
     $y < self::GRID_SIZE &&
     $this->gameManager->playPiecePLacement($game, $x, $y)
     ) {
-      $jsonContent = $this->serializer->serialize($game, 'json');
-      return new JsonResponse($jsonContent, 200, [], true);
+      return $this->redirectToRoute('game', array('idGame' => $game->getIdGame()));
     }
-    else {
-      return new JsonResponse("{}", 404, [], true);
-    }
+    return $this->redirectToRoute('all', array('req' => "error"));
   }
 }

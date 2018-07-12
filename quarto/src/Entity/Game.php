@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Api\TokenManager;
 use App\Api\Piece;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +33,20 @@ class Game {
     /** @ORM\Column(type="json_array") */
     private $winning_line;
 
-    public function __construct(int $id_game, Array $grid, bool $is_player_one_turn, int $selected_piece, int $number_players, Array $winning_line)
+    /** @ORM\Column(type="boolean") */
+    private $closed;
+
+    /** @ORM\Column(type="string") */
+    private $token_player_one;
+
+    /** @ORM\Column(type="string") */
+    private $token_player_two;
+
+    public $locked;
+
+    public $watch_only;
+
+    public function __construct(int $id_game, Array $grid, bool $is_player_one_turn, int $selected_piece, int $number_players, Array $winning_line, bool $closed=false, string $token_player_one='', string $token_player_two='')
     {
         $this->id_game = $id_game;
         $this->grid = $grid;
@@ -40,6 +54,9 @@ class Game {
         $this->selected_piece = $selected_piece;
         $this->number_players = $number_players;
         $this->winning_line = $winning_line;
+        $this->closed = $closed;
+        $this->token_player_one = $token_player_one;
+        $this->token_player_two = $token_player_two;
     }
 
     public function getIdGame() : int
@@ -70,6 +87,21 @@ class Game {
     public function getWinningLine() : Array
     {
         return $this->winning_line;
+    }
+
+    public function getClosed() : bool
+    {
+        return $this->closed;
+    }
+
+    public function getTokenPlayerOne() : string
+    {
+        return $this->token_player_one;
+    }
+
+    public function getTokenPlayerTwo() : string
+    {
+        return $this->token_player_two;
     }
 
     public function setIdGame(int $id_game)
@@ -107,6 +139,24 @@ class Game {
         return $this;
     }
 
+    public function setClosed(bool $closed) : Game
+    {
+        $this->closed = $closed;
+        return $this;
+    }
+
+    public function setTokenPlayerOne(string $token_player_one) : Game
+    {
+        $this->token_player_one = $token_player_one;
+        return $this;
+    }
+
+    public function setTokenPlayerTwo(string $token_player_two) : Game
+    {
+        $this->token_player_two = $token_player_two;
+        return $this;
+    }
+
     static function new(int $size) : Game {
         $grid = [];
 
@@ -117,7 +167,9 @@ class Game {
             }
         }
 
-        return new Game(0, $grid, true, 0, 1, []);
+        $token = TokenManager::generate();
+
+        return new Game(0, $grid, true, 0, 1, [], false, $token);
     }
 
     public function getAllPieces() : Array {
@@ -131,6 +183,24 @@ class Game {
                     foreach($raw as $item) {
                         if ($item === $i) {
                             $pieces[$i]->setUsed(true);
+                        }
+                    }
+                }
+            }
+        }
+        return $pieces;
+    }
+
+    public function getRemainingPieces() : Array {
+        $pieces = [];
+        $size = count($this->grid);
+
+        if ($size > 0) {
+            for ($i = 1; $i <= $size * $size; $i++) {
+                foreach($this->grid as $raw) {
+                    foreach($raw as $item) {
+                        if ($item !== $i) {
+                            $pieces[$i] = new Piece($i, false);
                         }
                     }
                 }
@@ -156,6 +226,7 @@ class Game {
         $this->setGrid($grid);
         $this->setSelectedPiece(0);
         $this->setWinningLine($winningLine);
+        $this->setClosed(count($winningLine)>0 || count($this->getRemainingPieces())==0);
         return $this;
     }
 
@@ -213,5 +284,23 @@ class Game {
             }
         }
         return $piecesLine;
+    }
+
+    public function securiseGameBeforeReturn(string $token, int $register = 0) : Game {
+        if (($this->getTokenPlayerOne() != $token && $this->getIsPlayerOneTurn())
+            || ($this->getTokenPlayerTwo() != $token && !$this->getIsPlayerOneTurn())) {
+            $this->locked = true;
+            if ($this->getTokenPlayerOne() != $token && $this->getTokenPlayerTwo() != $token) {
+                $this->watch_only = true;
+            }
+        }
+        else {
+            $this->locked = false;
+        }
+        $this->setTokenPlayerOne('');
+        if ($register!=1) {
+            $this->setTokenPlayerTwo('');
+        }
+        return $this;
     }
 }

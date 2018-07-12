@@ -20,7 +20,7 @@ class GameManager {
         return $game;
     }
 
-    public function playPieceSelection(Game $game, int $piece) : bool{
+    public function playPieceSelection(Game $game, int $piece) : bool {
         if ($game->getSelectedPiece() != 0) {
             return false;
         }
@@ -30,7 +30,7 @@ class GameManager {
         return true;
     }
 
-    public function playPiecePLacement(Game $game, int $x, int $y) : bool{
+    public function playPiecePLacement(Game $game, int $x, int $y) : bool {
         $grid = $game->getGrid();
         if ($grid[$y][$x] != ".") {
             return false;
