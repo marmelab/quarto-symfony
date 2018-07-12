@@ -34,30 +34,55 @@ class GameController extends Controller {
   public function current(Request $request, int $idGame) {
     $cookieManager = new CookieManager($this->gameRepository);
     $game = $this->gameRepository->findGameById($idGame);
-    $playerInfo = $cookieManager->tryCreatePlayer2($request, $game);
+    if ($game != NULL) {
+      $playerInfo = $cookieManager->tryCreatePlayer2($request, $game);
 
-    $response = new Response($this->twig->render('game.html.twig', [
-      'game' => $game,
-      'pieces' => $game->getAllPieces(),
-      'playerId' => $playerInfo["playerId"]
-    ]));
+      $response = new Response($this->twig->render('game.html.twig', [
+        'game' => $game,
+        'pieces' => $game->getAllPieces(),
+        'canPlay' => ($playerInfo["playerId"] == 1 && $game->getIsPlayerOneTurn()) || ($playerInfo["playerId"] == 2 && $game->getIsPlayerOneTurn() == false),
+        'playerId' => $playerInfo["playerId"]
+      ]));
 
-    if ($playerInfo["playerCreated"]) {
-      $cookieManager->setPlayerId($response, $game, $playerInfo["playerId"]);
+      if ($playerInfo["playerCreated"]) {
+        $cookieManager->setPlayerId($response, $game, $playerInfo["playerId"]);
+      }
+        
+      return $response;
+
     }
-      
-    return $response;
+    else {
+      return $this->redirectToRoute('all', array('req' => "error"));
+    }
   }
 
   public function select(int $idGame, int $piece) {
     $game = $this->gameRepository->findGameById($idGame);
-    $this->gameManager->playPieceSelection($game, $piece);
-    return $this->redirectToRoute('game', array('idGame' => $game->getIdGame()));    
+    if ($game != NULL && 
+    $piece > 0 &&
+    $piece <= self::GRID_SIZE * self::GRID_SIZE &&
+    $this->gameManager->playPieceSelection($game, $piece)
+    ) {
+      return $this->redirectToRoute('game', array('idGame' => $game->getIdGame()));   
+    }
+    else {
+      return $this->redirectToRoute('all', array('req' => "error"));
+    } 
   }
 
   public function place(int $idGame, int $x, int $y) {
     $game = $this->gameRepository->findGameById($idGame);
-    $this->gameManager->playPiecePLacement($game, $x, $y);
-    return $this->redirectToRoute('game', array('idGame' => $game->getIdGame()));
+    if ($game != NULL && 
+    $x >= 0 &&
+    $x < self::GRID_SIZE && 
+    $y >= 0 &&
+    $y < self::GRID_SIZE &&
+    $this->gameManager->playPiecePLacement($game, $x, $y)
+    ) {
+      return $this->redirectToRoute('game', array('idGame' => $game->getIdGame()));
+    }
+    else {
+      return $this->redirectToRoute('all', array('req' => "error"));
+    }
   }
 }

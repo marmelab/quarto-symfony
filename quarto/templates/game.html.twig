@@ -1,4 +1,9 @@
 {% extends "base.html.twig" %}
+{% block refresh %}
+  {% if (canPlay == false) %}
+    <meta http-equiv="Refresh" content="2">
+  {% endif %}
+{% endblock %}
 {% block header %}
   <div class="section">
     <h4>Welcome to Quarto online !</h4>
@@ -13,7 +18,7 @@
         'grid': game.getGrid(), 
         'pieceSelected' : game.getSelectedPiece(),
         'winningLine' : game.getWinningLine(),
-        'canPlay' : (playerId == 1 and game.getIsPlayerOneTurn()) or (playerId == 2 and game.getIsPlayerOneTurn() == false)} %}
+        'canPlay' : canPlay} %}
     </div>
     <div>
       {% include 'pieces.html.twig' with {
@@ -21,7 +26,7 @@
         'pieces': pieces, 
         'pieceSelected' : game.getSelectedPiece(),
         'winningLine' : game.getWinningLine(),
-        'canPlay' : (playerId == 1 and game.getIsPlayerOneTurn()) or (playerId == 2 and game.getIsPlayerOneTurn() == false)} %}
+        'canPlay' : canPlay} %}
     </div>
     <div>
       {% include 'players.html.twig' with {
@@ -30,7 +35,7 @@
         'player1Name' : 'Player 1',
         'player2Name' : 'Player 2',
         'winningLine' : game.getWinningLine(),
-        'canPlay' : (playerId == 1 and game.getIsPlayerOneTurn()) or (playerId == 2 and game.getIsPlayerOneTurn() == false),
+        'canPlay' : canPlay,
         'playerId' : playerId} %}
     </div>
   </div>
