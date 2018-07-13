@@ -5,26 +5,29 @@ namespace Tests\App\Api;
 use PHPUnit\Framework\TestCase;
 use App\Api\Piece;
 
-class PieceTest extends TestCase {
+class PieceTest extends TestCase
+{
+    public function testUnSetUsed()
+    {
+        $piece = new Piece(1, true);
 
-  public function testUnSetUsed() {
-    $piece = new Piece(1,true);
+        $piece->setUsed(false);
+        $this->assertEquals(false, $piece->getUsed());
+    }
 
-    $piece->setUsed(false);
-    $this->assertEquals(false, $piece->getUsed());
-  }
+    public function testSetUsed()
+    {
+        $piece = new Piece(1, false);
 
-  public function testSetUsed() {
-    $piece = new Piece(1,false);
+        $piece->setUsed(true);
+        $this->assertEquals(true, $piece->getUsed());
+    }
 
-    $piece->setUsed(true);
-    $this->assertEquals(true, $piece->getUsed());
-  }
+    public function testSetId()
+    {
+        $piece = new Piece(3, false);
 
-  public function testSetId() {
-    $piece = new Piece(3,false);
-
-    $piece->setId(2);
-    $this->assertEquals(2, $piece->getId());
-  }
+        $piece->setId(2);
+        $this->assertEquals(2, $piece->getId());
+    }
 }

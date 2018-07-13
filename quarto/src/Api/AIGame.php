@@ -6,7 +6,8 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class AIGame {
+class AIGame
+{
 
     private $Grid;
     private $Piece;
@@ -19,34 +20,41 @@ class AIGame {
         $this->Move = $move;
     }
 
-    public function getGrid() : array {
+    public function getGrid() : array
+    {
         return $this->Grid;
-    } 
+    }
 
-    public function getPiece() : int {
+    public function getPiece() : int
+    {
         return $this->Piece;
-    } 
+    }
 
-    public function getMove() : array {
+    public function getMove() : array
+    {
         return $this->Move;
-    } 
+    }
 
-    public function setGrid(array $grid) {
+    public function setGrid(array $grid)
+    {
         $this->Grid = $grid;
         return $this;
-    } 
+    }
 
-    public function setPiece(int $piece) {
+    public function setPiece(int $piece)
+    {
         $this->Piece = $piece;
         return $this;
     }
 
-    public function setMove(array $move) {
+    public function setMove(array $move)
+    {
         $this->Move = $move;
         return $this;
     }
 
-    public function toValidJsonString() : string {
+    public function toValidJsonString() : string
+    {
         $encoders = array(new XmlEncoder(), new JsonEncoder());
         $normalizers = array(new ObjectNormalizer());
 
