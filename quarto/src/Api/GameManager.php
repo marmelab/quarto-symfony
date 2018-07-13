@@ -10,6 +10,8 @@ use App\Api\ApiConsumerService;
 
 class GameManager {
 
+    private $nodeIsomorphicUrl = "http://192.168.86.248:3000/";
+    private $aiApiUrl = "http://192.168.86.248:8080/suggestMove";
     private $gameRepository;
 
     public function __construct(GameRepository $gameRepository) {
@@ -37,6 +39,12 @@ class GameManager {
         $game->selectNextPiece($piece);
         $game->changeTurn();
         $this->gameRepository->save($game);
+        try {
+            ApiConsumerService::CallAPI("GET", $this->nodeIsomorphicUrl.$game->getIdGame().'/updated', 1);
+        }
+        catch (Exception $e) {
+            //No node responded, then ignore
+        }
         return true;
     }
 
@@ -47,15 +55,19 @@ class GameManager {
         }
         $game->placePiece($x, $y);
         $this->gameRepository->save($game);
+        try {
+            ApiConsumerService::CallAPI("GET", $this->nodeIsomorphicUrl.$game->getIdGame().'/updated', 1);
+        }
+        catch (Exception $e) {
+            //No node responded, then ignore
+        }
         return true;
     }
     
     public function submitToAI(Game $game) : bool {
-        $aiApiUrl = "http://192.168.0.3:8080/suggestMove";
-
         $jsonContent = $game->toAIGame()->toValidJsonString();
 
-        $result = ApiConsumerService::CallAPI("POST", $aiApiUrl, $jsonContent);
+        $result = ApiConsumerService::CallAPI("POST", $this->aiApiUrl, 30, $jsonContent);
         $resultJsonContent = json_decode($result, true);
        
         $move = $resultJsonContent['Move'];
