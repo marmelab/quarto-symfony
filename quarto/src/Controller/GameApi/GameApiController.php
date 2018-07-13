@@ -43,7 +43,7 @@ class GameApiController extends Controller {
     $game = $this->gameManager->newGameSolo(self::GRID_SIZE);
     $jsonContent = $this->serializer->serialize($game, 'json');
     $response = new JsonResponse($jsonContent, 200, $this->headers, true);
-    return $response;    
+    return $response;
   }
 
   public function current(Request $request, int $idGame) {
@@ -141,22 +141,7 @@ class GameApiController extends Controller {
       $jsonContent = $this->serializer->serialize($game->winningInformation($token)->securiseGameBeforeReturn($token), 'json');
       return new JsonResponse($jsonContent, 200, $this->headers, true);
     }
-    return new JsonResponse("{}", 404, [], true);
-  }
-
-  public function submitToAI(Request $request, int $idGame) {
-    $token = $request->query->get('token');
-    $game = $this->gameRepository->findGameById($idGame);
-    if ($game != NULL && 
-    $this->gameManager->submitToAI($game)
-    ) {
-      if ($token == NULL) $token = '';
-      $jsonContent = $this->serializer->serialize($game->winningInformation($token)->securiseGameBeforeReturn($token), 'json');
-      return new JsonResponse($jsonContent, 200, [], true);
-    }
-    else {
-      return new JsonResponse("{}", 404, $this->headers, true);
-    }
+    return new JsonResponse("{}", 404, $this->headers, true);
   }
 
   public function submitToAI(Request $request, int $idGame) {
