@@ -304,7 +304,7 @@ class Game {
         if (($this->getTokenPlayerOne() != $token && $this->getIsPlayerOneTurn())
             || ($this->getTokenPlayerTwo() != $token && !$this->getIsPlayerOneTurn())) {
             $this->locked = true;
-            if ($this->getTokenPlayerOne() != $token && $this->getTokenPlayerTwo() != $token && $register != 1) {
+            if ((!$token || ($this->getTokenPlayerOne() != $token && $this->getTokenPlayerTwo() != $token)) && $register != 1) {
                 $this->watch_only = true;
             }
         }
