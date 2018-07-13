@@ -20,6 +20,7 @@ class GameApiController extends Controller {
   private $gameRepository;
   private $gameManager;
   private $serializer;
+  private $headers = array('access-control-allow-origin' => '*');
 
   public function __construct(GameRepository $gameRepository) {
     $this->gameRepository = $gameRepository;
@@ -34,15 +35,15 @@ class GameApiController extends Controller {
   public function new() {
     $game = $this->gameManager->newGame(self::GRID_SIZE);
     $jsonContent = $this->serializer->serialize($game, 'json');
-    $response = new JsonResponse($jsonContent, 200, [], true);
+    $response = new JsonResponse($jsonContent, 200, $this->headers, true);
     return $response;    
   }
 
   public function newSolo() {
     $game = $this->gameManager->newGameSolo(self::GRID_SIZE);
     $jsonContent = $this->serializer->serialize($game, 'json');
-    $response = new JsonResponse($jsonContent, 200, [], true);
-    return $response;    
+    $response = new JsonResponse($jsonContent, 200, $this->headers, true);
+    return $response;
   }
 
   public function current(Request $request, int $idGame) {
@@ -59,11 +60,12 @@ class GameApiController extends Controller {
       if ($registerContent == NULL) $registerContent = 0;
       if ($token == NULL) $token = '';
       $jsonContent = $this->serializer->serialize($game->winningInformation($token)->securiseGameBeforeReturn($token, $registerContent), 'json');
-      $response = new JsonResponse($jsonContent, 200, [], true);
+      $response = new JsonResponse($jsonContent, 200, $this->headers, true);
 
       return $response;
+
     }
-    return new JsonResponse("{}", 404, [], true);
+    return new JsonResponse("{}", 404, $this->headers, true);
   }
 
   public function openedList(Request $request) {
@@ -74,10 +76,11 @@ class GameApiController extends Controller {
     if ($games != NULL) {
       
       $jsonContent = $this->serializer->serialize($games, 'json');
-      $response = new JsonResponse($jsonContent, 200, [], true);
+      $response = new JsonResponse($jsonContent, 200, $this->headers, true);
       return $response;
+
     }
-    return new JsonResponse("{}", 200, [], true);
+    return new JsonResponse("{}", 200, $this->headers, true);
   }
 
   public function currentList(Request $request) {
@@ -88,10 +91,11 @@ class GameApiController extends Controller {
     if ($games != NULL) {
       
       $jsonContent = $this->serializer->serialize($games, 'json');
-      $response = new JsonResponse($jsonContent, 200, [], true);
+      $response = new JsonResponse($jsonContent, 200, $this->headers, true);
       return $response;
+
     }
-    return new JsonResponse("{}", 200, [], true);
+    return new JsonResponse("{}", 200, $this->headers, true);
   }
 
   public function onlywatchList(Request $request) {
@@ -102,10 +106,10 @@ class GameApiController extends Controller {
     if ($games != NULL) {
       
       $jsonContent = $this->serializer->serialize($games, 'json');
-      $response = new JsonResponse($jsonContent, 200, [], true);
+      $response = new JsonResponse($jsonContent, 200, $this->headers, true);
       return $response;
     }
-    return new JsonResponse("{}", 200, [], true);
+    return new JsonResponse("{}", 200, $this->headers, true);
   }
 
   public function select(Request $request, int $idGame, int $piece) {
@@ -118,9 +122,9 @@ class GameApiController extends Controller {
     ) {
       if ($token == NULL) $token = '';
       $jsonContent = $this->serializer->serialize($game->securiseGameBeforeReturn($token), 'json');
-      return new JsonResponse($jsonContent, 200, [], true); 
+      return new JsonResponse($jsonContent, 200, $this->headers, true); 
     }
-    return new JsonResponse("{}", 404, [], true);
+    return new JsonResponse("{}", 404, $this->headers, true);
   }
 
   public function place(Request $request, int $idGame, int $x, int $y) {
@@ -135,9 +139,9 @@ class GameApiController extends Controller {
     ) {
       if ($token == NULL) $token = '';
       $jsonContent = $this->serializer->serialize($game->winningInformation($token)->securiseGameBeforeReturn($token), 'json');
-      return new JsonResponse($jsonContent, 200, [], true);
+      return new JsonResponse($jsonContent, 200, $this->headers, true);
     }
-    return new JsonResponse("{}", 404, [], true);
+    return new JsonResponse("{}", 404, $this->headers, true);
   }
 
   public function submitToAI(Request $request, int $idGame) {
@@ -148,10 +152,10 @@ class GameApiController extends Controller {
     ) {
       if ($token == NULL) $token = '';
       $jsonContent = $this->serializer->serialize($game->winningInformation($token)->securiseGameBeforeReturn($token), 'json');
-      return new JsonResponse($jsonContent, 200, [], true);
+      return new JsonResponse($jsonContent, 200, $this->headers, true);
     }
     else {
-      return new JsonResponse("{}", 404, [], true);
+      return new JsonResponse("{}", 404, $this->headers, true);
     }
   }
 }
