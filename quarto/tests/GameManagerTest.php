@@ -22,6 +22,7 @@ class GameManagerTest extends TestCase {
       array('.', '.', '.', '.'),
       array('.', '.', '.', '.')
     ), true, 0, 1, false, [], false);
+    $referenceGame->setTokenPlayerOne($game->getTokenPlayerOne());
     $this->assertEquals($referenceGame, $game);
   }
 
