@@ -46,6 +46,10 @@ class Game {
 
     public $watch_only;
 
+    public $you_won;
+
+    public $winner_id;
+
     public function __construct(int $id_game, Array $grid, bool $is_player_one_turn, int $selected_piece, int $number_players, Array $winning_line, bool $closed=false, string $token_player_one='', string $token_player_two='')
     {
         $this->id_game = $id_game;
@@ -300,6 +304,33 @@ class Game {
         $this->setTokenPlayerOne('');
         if ($register!=1) {
             $this->setTokenPlayerTwo('');
+        }
+        return $this;
+    }
+
+    public function winningInformation(string $token) : Game {
+        if ($this->getWinningLine()!= [])
+        {
+            if ($this->getTokenPlayerOne() == $token && $this->getIsPlayerOneTurn()) {
+                $this->you_won = true;
+                $this->winner_id = 1;
+            }
+            else if ($this->getTokenPlayerTwo() == $token && !$this->getIsPlayerOneTurn()) {
+                $this->you_won = true;
+                $this->winner_id = 2;
+            }
+            else if ($this->getTokenPlayerOne() == $token && !$this->getIsPlayerOneTurn()) {
+                $this->you_won = false;
+                $this->winner_id = 1;
+            }
+            else {
+                $this->you_won = false;
+                $this->winner_id = 2;
+            }
+        }
+        else {
+            $this->you_won = false;
+            $this->winner_id = 0;
         }
         return $this;
     }
