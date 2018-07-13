@@ -5,6 +5,8 @@ namespace App\Api;
 use App\Entity\Game;
 use App\Repository\GameRepository;
 use App\Api\Piece;
+use App\Api\AIGame;
+use App\Api\ApiConsumerService;
 
 class GameManager {
 
@@ -16,6 +18,14 @@ class GameManager {
 
     public function newGame(int $size) : Game {
         $game = Game::new($size);
+        $this->gameRepository->save($game);
+        return $game;
+    }
+
+    public function newGameSolo(int $size) : Game {
+        $game = $this->newGame($size);
+        $game->setNumberOfPlayers(2);
+        $game->setSoloGame(true);
         $this->gameRepository->save($game);
         return $game;
     }
@@ -37,6 +47,29 @@ class GameManager {
         }
         $game->placePiece($x, $y);
         $this->gameRepository->save($game);
+        return true;
+    }
+    
+    public function submitToAI(Game $game) : bool {
+        $aiApiUrl = "http://192.168.86.248:8080/suggestMove";
+
+        $jsonContent = $game->toAIGame()->toValidJsonString();
+
+        $result = ApiConsumerService::CallAPI("POST", $aiApiUrl, $jsonContent);
+        $resultJsonContent = json_decode($result, true);
+       
+        $move = $resultJsonContent['Move'];
+        $piece = $resultJsonContent['Piece'];
+
+        $this->playPiecePLacement($game, $move[1], $move[0]);
+        $this->playPieceSelection($game, $piece);
+
+        //Patch for API Go wich give back the hand after player even if it wins
+        //That leads to client to trust he win but in fact not
+        if ($game->getClosed() === true) {
+            $game->setIsPlayerOneTurn(false);
+            $this->gameRepository->save($game);
+        }
         return true;
     }
 }
