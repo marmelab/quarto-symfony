@@ -10,6 +10,11 @@ gameapi:
     resource: '../src/Controller/GameApi/gameApiRouting.yml'
     prefix:   /gameapi
 
+gameapi_new:
+  path: /gameapi
+  controller: 'App\Controller\GameApi\GameApiController::new'
+
+
 all:
   path: /{req}
   defaults: { _controller: 'App\Controller\DefaultController::index' }

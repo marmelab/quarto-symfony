@@ -1,7 +1,3 @@
-gameapi_new:
-  path: /
-  controller: 'App\Controller\GameApi\GameApiController::new'
-
 gameapi_new_solo:
   path: /solo
   controller: 'App\Controller\GameApi\GameApiController::newSolo'
