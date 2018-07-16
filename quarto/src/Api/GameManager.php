@@ -8,23 +8,27 @@ use App\Api\Piece;
 use App\Api\AIGame;
 use App\Api\ApiConsumerService;
 
-class GameManager {
+class GameManager
+{
 
     private $nodeIsomorphicUrl = "http://192.168.86.248:3000/";
     private $aiApiUrl = "http://192.168.86.248:8080/suggestMove";
     private $gameRepository;
 
-    public function __construct(GameRepository $gameRepository) {
+    public function __construct(GameRepository $gameRepository)
+    {
         $this->gameRepository = $gameRepository;
     }
 
-    public function newGame(int $size) : Game {
+    public function newGame(int $size) : Game
+    {
         $game = Game::new($size);
         $this->gameRepository->save($game);
         return $game;
     }
 
-    public function newGameSolo(int $size) : Game {
+    public function newGameSolo(int $size) : Game
+    {
         $game = $this->newGame($size);
         $game->setNumberOfPlayers(2);
         $game->setSoloGame(true);
@@ -32,7 +36,8 @@ class GameManager {
         return $game;
     }
 
-    public function playPieceSelection(Game $game, int $piece) : bool {
+    public function playPieceSelection(Game $game, int $piece) : bool
+    {
         if ($game->getSelectedPiece() != 0) {
             return false;
         }
@@ -40,15 +45,15 @@ class GameManager {
         $game->changeTurn();
         $this->gameRepository->save($game);
         try {
-            ApiConsumerService::CallAPI("GET", $this->nodeIsomorphicUrl.$game->getIdGame().'/updated', 1);
-        }
-        catch (Exception $e) {
+            ApiConsumerService::callAPI("GET", $this->nodeIsomorphicUrl.$game->getIdGame().'/updated', 1);
+        } catch (Exception $e) {
             //No node responded, then ignore
         }
         return true;
     }
 
-    public function playPiecePLacement(Game $game, int $x, int $y) : bool {
+    public function playPiecePLacement(Game $game, int $x, int $y) : bool
+    {
         $grid = $game->getGrid();
         if ($grid[$y][$x] != ".") {
             return false;
@@ -56,18 +61,18 @@ class GameManager {
         $game->placePiece($x, $y);
         $this->gameRepository->save($game);
         try {
-            ApiConsumerService::CallAPI("GET", $this->nodeIsomorphicUrl.$game->getIdGame().'/updated', 1);
-        }
-        catch (Exception $e) {
+            ApiConsumerService::callAPI("GET", $this->nodeIsomorphicUrl.$game->getIdGame().'/updated', 1);
+        } catch (Exception $e) {
             //No node responded, then ignore
         }
         return true;
     }
     
-    public function submitToAI(Game $game) : bool {
+    public function submitToAI(Game $game) : bool
+    {
         $jsonContent = $game->toAIGame()->toValidJsonString();
 
-        $result = ApiConsumerService::CallAPI("POST", $this->aiApiUrl, 30, $jsonContent);
+        $result = ApiConsumerService::callAPI("POST", $this->aiApiUrl, 30, $jsonContent);
         $resultJsonContent = json_decode($result, true);
        
         $move = $resultJsonContent['Move'];

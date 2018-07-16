@@ -9,9 +9,9 @@ use App\Api\GameManager;
 use App\Api\Piece;
 use App\Repository\GameRepository;
 
-class ControlerTest extends WebTestCase {
-
-  public function testMainPageResponds()
+class ControlerTest extends WebTestCase
+{
+    public function testMainPageResponds()
     {
         $client = static::createClient();
 

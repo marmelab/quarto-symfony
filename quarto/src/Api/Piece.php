@@ -1,7 +1,8 @@
 <?php
 namespace App\Api;
 
-class Piece {
+class Piece
+{
 
     private $id;
     private $used;
@@ -12,25 +13,30 @@ class Piece {
         $this->used = $used;
     }
 
-    public function getId() : int {
+    public function getId() : int
+    {
         return $this->id;
-    } 
+    }
 
-    public function getUsed() : bool {
+    public function getUsed() : bool
+    {
         return $this->used;
-    } 
+    }
 
-    public function setId(int $id) {
+    public function setId(int $id)
+    {
         $this->id = $id;
         return $this;
-    } 
+    }
 
-    public function setUsed(bool $used) {
+    public function setUsed(bool $used)
+    {
         $this->used = $used;
         return $this;
     }
 
-    public static function isWinningLine(array $pieces) : bool {
+    public static function isWinningLine(array $pieces) : bool
+    {
         if (!in_array('.', $pieces) && count($pieces) == 4) {
             $piece1 = $pieces[0];
             $piece2 = $pieces[1];

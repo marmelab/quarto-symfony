@@ -11,7 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\GameRepository")
  * @ORM\Table
  */
-class Game {
+class Game
+{
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -54,8 +55,18 @@ class Game {
 
     public $winner_id;
 
-    public function __construct(int $id_game, Array $grid, bool $is_player_one_turn, int $selected_piece, int $number_players, bool $solo_game, Array $winning_line, bool $closed=false, string $token_player_one='', string $token_player_two='')
-    {
+    public function __construct(
+        int $id_game,
+        array $grid,
+        bool $is_player_one_turn,
+        int $selected_piece,
+        int $number_players,
+        bool $solo_game,
+        array $winning_line,
+        bool $closed = false,
+        string $token_player_one = '',
+        string $token_player_two = ''
+    ) {
         $this->id_game = $id_game;
         $this->grid = $grid;
         $this->is_player_one_turn = $is_player_one_turn;
@@ -123,7 +134,7 @@ class Game {
         $this->id_game = $id_game;
     }
 
-    public function setGrid(Array $grid) : Game
+    public function setGrid(array $grid) : Game
     {
         $this->grid = $grid;
         return $this;
@@ -153,7 +164,7 @@ class Game {
         return $this;
     }
 
-    public function setWinningLine(Array $winning_line) : Game
+    public function setWinningLine(array $winning_line) : Game
     {
         $this->winning_line = $winning_line;
         return $this;
@@ -177,7 +188,8 @@ class Game {
         return $this;
     }
 
-    static function new(int $size) : Game {
+    public static function new(int $size) : Game
+    {
         $grid = [];
 
         for ($i = 0; $i < $size; $i++) {
@@ -192,15 +204,16 @@ class Game {
         return new Game(0, $grid, true, 0, 1, false, [], false, $token);
     }
 
-    public function getAllPieces() : Array {
+    public function getAllPieces() : array
+    {
         $pieces = [];
         $size = count($this->grid);
 
         if ($size > 0) {
             for ($i = 1; $i <= $size * $size; $i++) {
                 $pieces[$i] = new Piece($i, false);
-                foreach($this->grid as $raw) {
-                    foreach($raw as $item) {
+                foreach ($this->grid as $raw) {
+                    foreach ($raw as $item) {
                         if ($item === $i) {
                             $pieces[$i]->setUsed(true);
                         }
@@ -211,11 +224,12 @@ class Game {
         return $pieces;
     }
 
-    public function getRemainingPieces() : Array {
+    public function getRemainingPieces() : array
+    {
         $remainingPieces = [];
         $allPieces = $this->getAllPieces();
 
-        foreach($allPieces as $piece) {
+        foreach ($allPieces as $piece) {
             if ($piece->getUsed() === false) {
                 $remainingPieces[$piece->getId()] = $piece;
             }
@@ -223,17 +237,20 @@ class Game {
         return $remainingPieces;
     }
 
-    public function changeTurn() : Game {
+    public function changeTurn() : Game
+    {
         $this->setIsPlayerOneTurn(!$this->getIsPlayerOneTurn());
         return $this;
     }
 
-    public function selectNextPiece(int $id_piece) : Game {
+    public function selectNextPiece(int $id_piece) : Game
+    {
         $this->setSelectedPiece($id_piece);
         return $this;
     }
 
-    public function placePiece(int $x, int $y) : Game {
+    public function placePiece(int $x, int $y) : Game
+    {
         $winningLine = $this->getWinningPosition($x, $y, $this->getSelectedPiece());
         $grid = $this->getGrid();
         $grid[$y][$x] = $this->getSelectedPiece();
@@ -244,7 +261,8 @@ class Game {
         return $this;
     }
 
-    public function getWinningPosition(int $x, int $y, int $piece) : array {
+    public function getWinningPosition(int $x, int $y, int $piece) : array
+    {
         $testGame = clone $this;
         $grid = $testGame->getGrid();
         $grid[$y][$x] = $piece;
@@ -268,11 +286,13 @@ class Game {
         return [];
     }
 
-    public function getPiecesRaw(int $x, int $y) : array {
+    public function getPiecesRaw(int $x, int $y) : array
+    {
         return $this->grid[$y];
     }
 
-    public function getPiecesColumn(int $x, int $y) : array {
+    public function getPiecesColumn(int $x, int $y) : array
+    {
         $piecesLine = [];
         for ($i = 0; $i < count($this->grid); $i++) {
             $piecesLine[$i] = $this->grid[$i][$x];
@@ -280,7 +300,8 @@ class Game {
         return $piecesLine;
     }
 
-    public function getPiecesSlashDiag(int $x, int $y) : array {
+    public function getPiecesSlashDiag(int $x, int $y) : array
+    {
         $piecesLine = [];
         if ($x == $y) {
             for ($i = 0; $i < count($this->grid); $i++) {
@@ -290,7 +311,8 @@ class Game {
         return $piecesLine;
     }
 
-    public function getPiecesBackSlashDiag(int $x, int $y) : array {
+    public function getPiecesBackSlashDiag(int $x, int $y) : array
+    {
         $piecesLine = [];
         if ($x == count($this->getGrid())-$y-1) {
             for ($i = 0; $i < count($this->getGrid()); $i++) {
@@ -300,16 +322,17 @@ class Game {
         return $piecesLine;
     }
 
-    public function securiseGameBeforeReturn(string $token, int $register = 0) : Game {
+    public function securiseGameBeforeReturn(string $token, int $register = 0) : Game
+    {
         if (($this->getTokenPlayerOne() != $token && $this->getIsPlayerOneTurn())
             || ($this->getTokenPlayerTwo() != $token && !$this->getIsPlayerOneTurn())) {
             $this->locked = true;
-            if ((!$token || ($this->getTokenPlayerOne() != $token && $this->getTokenPlayerTwo() != $token)) && $register != 1) {
+            if ((!$token || ($this->getTokenPlayerOne() != $token && $this->getTokenPlayerTwo() != $token)) &&
+                $register != 1) {
                 $this->watch_only = true;
             }
-        }
-        else {
-            $this->locked = false; 
+        } else {
+            $this->locked = false;
         }
         $this->setTokenPlayerOne('');
         if ($register!=1) {
@@ -318,73 +341,70 @@ class Game {
         return $this;
     }
 
-    public function winningInformation(string $token) : Game {
-        if ($this->getWinningLine()!= [])
-        {
+    public function winningInformation(string $token) : Game
+    {
+        if ($this->getWinningLine()!= []) {
             if ($this->getTokenPlayerOne() == $token && $this->getIsPlayerOneTurn()) {
                 $this->you_won = true;
                 $this->winner_id = 1;
-            }
-            else if ($this->getTokenPlayerTwo() == $token && !$this->getIsPlayerOneTurn()) {
+            } elseif ($this->getTokenPlayerTwo() == $token && !$this->getIsPlayerOneTurn()) {
                 $this->you_won = true;
                 $this->winner_id = 2;
-            }
-            else if ($this->getTokenPlayerOne() == $token && !$this->getIsPlayerOneTurn()) {
+            } elseif ($this->getTokenPlayerOne() == $token && !$this->getIsPlayerOneTurn()) {
                 $this->you_won = false;
                 $this->winner_id = 1;
-            }
-            else {
+            } else {
                 $this->you_won = false;
                 $this->winner_id = 2;
             }
-        }
-        else {
+        } else {
             $this->you_won = false;
             $this->winner_id = 0;
         }
         return $this;
     }
 
-    public function toAIGame() : AIGame {
+    public function toAIGame() : AIGame
+    {
         return new AIGame($this->grid, $this->selected_piece, []);
     }
 
-    public function getWinningPlaces() : Array {
+    public function getWinningPlaces() : array
+    {
         $badPositions= [];
         $gridSize = count($this->grid);
         $j = 0;
         if ($gridSize > 0) {
             for ($y = 0; $y < $gridSize; $y++) {
                 for ($x = 0; $x < $gridSize; $x++) {
-                    if ($this->getWinningPosition($x, $y, $this->selected_piece) != [])
-                    {
+                    if ($this->getWinningPosition($x, $y, $this->selected_piece) != []) {
                         $badPositions[$j] = array($y, $x);
                         $j ++;
                     }
                 }
             }
-        } 
+        }
         return $badPositions;
     }
 
-    public function getWinningPieces() : Array {
+    public function getWinningPieces() : array
+    {
         $badPieces = [];
         $remainingPieces = $this->getRemainingPieces();
         $gridSize = count($this->grid);
         $j = 0;
-        foreach($remainingPieces as $remainingPiece) {
+        foreach ($remainingPieces as $remainingPiece) {
             if ($gridSize > 0) {
                 for ($y = 0; $y < $gridSize; $y++) {
                     for ($x = 0; $x < $gridSize; $x++) {
-                        if ($this->getWinningPosition($x, $y, $remainingPiece->getId()) != [])
-                        {
+                        if ($this->getWinningPosition($x, $y, $remainingPiece->getId()) != []) {
                             $badPieces[$j] = $remainingPiece->getId();
                             $j ++;
                             break;
                         }
                     }
                 }
-            } 
+            }
         }
         return $badPieces;
     }
