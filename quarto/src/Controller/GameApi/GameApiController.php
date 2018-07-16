@@ -33,9 +33,10 @@ class GameApiController extends Controller
         $this->serializer = new Serializer($normalizers, $encoders);
     }
     
-    public function new()
+    public function new(Request $request)
     {
-        $game = $this->gameManager->newGame(self::GRID_SIZE);
+        $avatar = $request->query->get('avatar');
+        $game = $this->gameManager->newGame(self::GRID_SIZE, $avatar);
         $jsonContent = $this->serializer->serialize($game, 'json');
         $response = new JsonResponse($jsonContent, 200, $this->headers, true);
         return $response;
@@ -51,6 +52,7 @@ class GameApiController extends Controller
 
     public function current(Request $request, int $idGame)
     {
+        $avatar = $request->query->get('avatar');
         $register = $request->query->get('register');
         $registerContent = json_decode($register, true);
         $token = $request->query->get('token');
@@ -58,6 +60,9 @@ class GameApiController extends Controller
         if ($game != null) {
             if ($registerContent==1) {
                 $game->setTokenPlayerTwo(TokenManager::generate())->setNumberOfPlayers(2);
+                if ($avatar) {
+                    $game->setPlayerTwoName($avatar);
+                }
                 $token = $game->getTokenPlayerTwo();
                 $this->gameRepository->save($game);
             }
@@ -67,7 +72,10 @@ class GameApiController extends Controller
             if ($token == null) {
                 $token = '';
             }
-            $jsonContent = $this->serializer->serialize($game->winningInformation($token)->securiseGameBeforeReturn($token, $registerContent), 'json');
+            $jsonContent = $this->serializer->serialize($game->winningInformation($token)->securiseGameBeforeReturn(
+                $token,
+                $registerContent
+            ), 'json');
             $response = new JsonResponse($jsonContent, 200, $this->headers, true);
 
             return $response;
