@@ -26,7 +26,12 @@ class GameRepository extends EntityRepository
         if (count($tokenList) === 0) {
             $tokenList=["NOTHING"];
         }
-        $query = $this->em->createQuery("SELECT g FROM App:Game g  " .
+        $query = $this->em->createQuery("SELECT g.id_game idGame,
+            g.number_players numberPlayers,
+            g.solo_game soloGame,
+            g.closed,
+            '' token
+        FROM App:Game g  " .
         "WHERE g.closed=false " .
         "AND g.number_players = 1 " .
         "AND g.token_player_one NOT IN (:player_one_token) " .
@@ -39,14 +44,30 @@ class GameRepository extends EntityRepository
 
     public function getCurrentGamesList(array $tokenList)
     {
-        $query = $this->em->createQuery("SELECT g FROM App:Game g  " .
+        $queryOne = $this->em->createQuery("SELECT g.id_game idGame,
+            g.number_players numberPlayers,
+            g.solo_game soloGame,
+            g.closed,
+            g.token_player_one token
+        FROM App:Game g  " .
         "WHERE g.closed=false  " .
-        "AND (g.token_player_one IN (:player_one_token)  " .
-        "  OR g.token_player_two IN (:player_two_token))  " .
+        "AND g.token_player_one IN (:player_one_token) " .
         "ORDER BY g.id_game ASC");
-        $query->setParameter('player_one_token', $tokenList);
-        $query->setParameter('player_two_token', $tokenList);
-        return $query->getResult();
+        $queryOne->setParameter('player_one_token', $tokenList);
+        $arrayOne = $queryOne->getResult();
+
+        $queryTwo = $this->em->createQuery("SELECT g.id_game idGame,
+            g.number_players numberPlayers,
+            g.solo_game soloGame,
+            g.closed,
+            g.token_player_two token
+        FROM App:Game g  " .
+        "WHERE g.closed=false  " .
+        "AND g.token_player_two IN (:player_two_token) " .
+        "ORDER BY g.id_game ASC");
+        $queryTwo->setParameter('player_two_token', $tokenList);
+        $arrayTwo = $queryTwo->getResult();
+        return array_merge($arrayOne, $arrayTwo);
     }
 
     public function getOnlySpectateGamesList(array $tokenList)
@@ -54,7 +75,12 @@ class GameRepository extends EntityRepository
         if (count($tokenList) === 0) {
             $tokenList=["NOTHING"];
         }
-        $query = $this->em->createQuery("SELECT g FROM App:Game g  " .
+        $query = $this->em->createQuery("SELECT g.id_game idGame,
+            g.number_players numberPlayers,
+            g.solo_game soloGame,
+            g.closed,
+            '' token
+        FROM App:Game g  " .
         "WHERE g.closed=false  " .
         "AND g.number_players = 2 " .
         "AND g.token_player_one NOT IN (:player_one_token) " .
