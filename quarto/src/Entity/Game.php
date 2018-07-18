@@ -53,7 +53,14 @@ class Game
 
     public $you_won;
 
-    public $winner_id;
+    /** @ORM\Column(type="string") */
+    private $winner_name;
+
+    /** @ORM\Column(type="string") */
+    private $player_one_name;
+
+    /** @ORM\Column(type="string") */
+    private $player_two_name;
 
     public function __construct(
         int $id_game,
@@ -65,7 +72,10 @@ class Game
         array $winning_line,
         bool $closed = false,
         string $token_player_one = '',
-        string $token_player_two = ''
+        string $token_player_two = '',
+        string $player_one_name = 'John Doe',
+        string $player_two_name = '',
+        string $winner_name = ''
     ) {
         $this->id_game = $id_game;
         $this->grid = $grid;
@@ -77,6 +87,9 @@ class Game
         $this->closed = $closed;
         $this->token_player_one = $token_player_one;
         $this->token_player_two = $token_player_two;
+        $this->player_one_name = $player_one_name;
+        $this->player_two_name = $player_two_name;
+        $this->winner_name = $winner_name;
     }
 
     public function getIdGame() : int
@@ -127,6 +140,21 @@ class Game
     public function getTokenPlayerTwo() : string
     {
         return $this->token_player_two;
+    }
+
+    public function getPlayerOneName() : string
+    {
+        return $this->player_one_name;
+    }
+
+    public function getPlayerTwoName() : string
+    {
+        return $this->player_two_name;
+    }
+
+    public function getWinnerName() : string
+    {
+        return $this->winner_name;
     }
 
     public function setIdGame(int $id_game)
@@ -188,7 +216,25 @@ class Game
         return $this;
     }
 
-    public static function new(int $size) : Game
+    public function setPlayerOneName(string $player_one_name) : Game
+    {
+        $this->player_one_name = $player_one_name;
+        return $this;
+    }
+
+    public function setPlayerTwoName(string $player_two_name) : Game
+    {
+        $this->player_two_name = $player_two_name;
+        return $this;
+    }
+
+    public function setWinnerName(string $winner_name) : Game
+    {
+        $this->winner_name = $winner_name;
+        return $this;
+    }
+
+    public static function new(int $size, string $playerName = '') : Game
     {
         $grid = [];
 
@@ -201,7 +247,21 @@ class Game
 
         $token = TokenManager::generate();
 
-        return new Game(0, $grid, true, 0, 1, false, [], false, $token);
+        return new Game(
+            0,
+            $grid,
+            true,
+            0,
+            1,
+            false,
+            [],
+            false,
+            $token,
+            '',
+            $playerName ?  $playerName : 'John Doe',
+            '',
+            ''
+        );
     }
 
     public function getAllPieces() : array
@@ -257,6 +317,9 @@ class Game
         $this->setGrid($grid);
         $this->setSelectedPiece(0);
         $this->setWinningLine($winningLine);
+        if (count($winningLine)>0) {
+            $this->setWinnerName($this->getIsPlayerOneTurn() ? $this->getPlayerOneName() : $this->getPlayerTwoName());
+        }
         $this->setClosed(count($winningLine)>0 || count($this->getRemainingPieces())==0);
         return $this;
     }

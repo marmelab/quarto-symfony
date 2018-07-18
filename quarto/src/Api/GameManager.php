@@ -20,16 +20,16 @@ class GameManager
         $this->gameRepository = $gameRepository;
     }
 
-    public function newGame(int $size) : Game
+    public function newGame(int $size, string $playerName = '') : Game
     {
-        $game = Game::new($size);
+        $game = Game::new($size, $playerName);
         $this->gameRepository->save($game);
         return $game;
     }
 
-    public function newGameSolo(int $size) : Game
+    public function newGameSolo(int $size, string $playerName = '') : Game
     {
-        $game = $this->newGame($size);
+        $game = $this->newGame($size, $playerName);
         $game->setNumberOfPlayers(2);
         $game->setSoloGame(true);
         $this->gameRepository->save($game);
@@ -86,6 +86,11 @@ class GameManager
         if ($game->getClosed() === true) {
             $game->setIsPlayerOneTurn(false);
             $this->gameRepository->save($game);
+        }
+        try {
+            ApiConsumerService::callAPI("GET", $this->nodeIsomorphicUrl.$game->getIdGame().'/updated', 1);
+        } catch (Exception $e) {
+            //No node responded, then ignore
         }
         return true;
     }

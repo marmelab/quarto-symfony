@@ -30,6 +30,8 @@ class GameRepository extends EntityRepository
         "    g.number_players numberPlayers, " .
         "   g.solo_game soloGame, " .
         "   g.closed, " .
+        "   g.player_one_name playerOneName, " .
+        "   g.player_two_name playerTwoName, " .
         "   '' token " .
         "FROM App:Game g " .
         "WHERE g.closed=false " .
@@ -48,6 +50,8 @@ class GameRepository extends EntityRepository
         "   g.number_players numberPlayers, " .
         "   g.solo_game soloGame, " .
         "   g.closed, " .
+        "   g.player_one_name playerOneName, " .
+        "   g.player_two_name playerTwoName, " .
         "   g.token_player_one token " .
         "FROM App:Game g " .
         "WHERE g.closed=false " .
@@ -60,6 +64,8 @@ class GameRepository extends EntityRepository
         "   g.number_players numberPlayers, " .
         "   g.solo_game soloGame, " .
         "   g.closed, " .
+        "   g.player_one_name playerOneName, " .
+        "   g.player_two_name playerTwoName, " .
         "   g.token_player_two token " .
         "FROM App:Game g " .
         "WHERE g.closed=false " .
@@ -79,6 +85,8 @@ class GameRepository extends EntityRepository
         "   g.number_players numberPlayers, " .
         "   g.solo_game soloGame, " .
         "   g.closed, " .
+        "   g.player_one_name playerOneName, " .
+        "   g.player_two_name playerTwoName, " .
         "   '' token " .
         "FROM App:Game g " .
         "WHERE g.closed=false " .
