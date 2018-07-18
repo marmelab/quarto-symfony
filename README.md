@@ -40,3 +40,12 @@ Runs all the tests of the project
 ```
 make test
 ```
+
+## Deploy
+
+Deploy project on server
+  -Need an existing ssh connexion to a server named "quarto"
+
+```
+make deploy
+```

@@ -27,9 +27,14 @@ test: ## Test the code
 	docker-compose run --no-deps --rm php bin/phpunit
 
 deploy: ## Deploy website on Web Server (Need a defined ssh connexion named "quarto")
-	zip -r quarto.zip quarto composer.json composer-setup.php composer.lock -x /quarto/var/cache/dev/* /quarto/vendor/*
+	zip -r quarto.zip quarto composer.json composer-setup.php composer.lock -x /quarto/var/cache/dev/* /quarto/vendor/* /quarto/.env /quarto/.env.dist /quarto/config/packages/doctrine.yaml
 	ssh quarto mkdir -p quarto-symfony
 	scp -v quarto.zip quarto:~/quarto-symfony/
 	ssh quarto 'unzip -uo ~/quarto-symfony/quarto.zip -d ~/quarto-symfony/'
 	ssh quarto 'rm -f ~/quarto-symfony/quarto.zip'
 	rm -f quarto.zip
+	ssh quarto 'cd quarto-symfony/quarto && ./bin/composer install'
+	ssh quarto "bash -ci './quarto-symfony/quarto/bin/console doctrine:database:create --if-not-exists && ./quarto-symfony/quarto/bin/console doctrine:schema:update --force'"
+	ssh quarto sudo service nginx restart
+	
+
