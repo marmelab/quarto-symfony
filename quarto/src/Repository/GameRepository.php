@@ -26,12 +26,12 @@ class GameRepository extends EntityRepository
         if (count($tokenList) === 0) {
             $tokenList=["NOTHING"];
         }
-        $query = $this->em->createQuery("SELECT g.id_game idGame,
-            g.number_players numberPlayers,
-            g.solo_game soloGame,
-            g.closed,
-            '' token
-        FROM App:Game g  " .
+        $query = $this->em->createQuery("SELECT g.id_game idGame, " .
+        "    g.number_players numberPlayers, " .
+        "   g.solo_game soloGame, " .
+        "   g.closed, " .
+        "   '' token " .
+        "FROM App:Game g " .
         "WHERE g.closed=false " .
         "AND g.number_players = 1 " .
         "AND g.token_player_one NOT IN (:player_one_token) " .
@@ -44,25 +44,25 @@ class GameRepository extends EntityRepository
 
     public function getCurrentGamesList(array $tokenList)
     {
-        $queryOne = $this->em->createQuery("SELECT g.id_game idGame,
-            g.number_players numberPlayers,
-            g.solo_game soloGame,
-            g.closed,
-            g.token_player_one token
-        FROM App:Game g  " .
-        "WHERE g.closed=false  " .
+        $queryOne = $this->em->createQuery("SELECT g.id_game idGame, " .
+        "   g.number_players numberPlayers, " .
+        "   g.solo_game soloGame, " .
+        "   g.closed, " .
+        "   g.token_player_one token " .
+        "FROM App:Game g " .
+        "WHERE g.closed=false " .
         "AND g.token_player_one IN (:player_one_token) " .
         "ORDER BY g.id_game ASC");
         $queryOne->setParameter('player_one_token', $tokenList);
         $arrayOne = $queryOne->getResult();
 
-        $queryTwo = $this->em->createQuery("SELECT g.id_game idGame,
-            g.number_players numberPlayers,
-            g.solo_game soloGame,
-            g.closed,
-            g.token_player_two token
-        FROM App:Game g  " .
-        "WHERE g.closed=false  " .
+        $queryTwo = $this->em->createQuery("SELECT g.id_game idGame, " .
+        "   g.number_players numberPlayers, " .
+        "   g.solo_game soloGame, " .
+        "   g.closed, " .
+        "   g.token_player_two token " .
+        "FROM App:Game g " .
+        "WHERE g.closed=false " .
         "AND g.token_player_two IN (:player_two_token) " .
         "ORDER BY g.id_game ASC");
         $queryTwo->setParameter('player_two_token', $tokenList);
@@ -75,13 +75,13 @@ class GameRepository extends EntityRepository
         if (count($tokenList) === 0) {
             $tokenList=["NOTHING"];
         }
-        $query = $this->em->createQuery("SELECT g.id_game idGame,
-            g.number_players numberPlayers,
-            g.solo_game soloGame,
-            g.closed,
-            '' token
-        FROM App:Game g  " .
-        "WHERE g.closed=false  " .
+        $query = $this->em->createQuery("SELECT g.id_game idGame, " .
+        "   g.number_players numberPlayers, " .
+        "   g.solo_game soloGame, " .
+        "   g.closed, " .
+        "   '' token " .
+        "FROM App:Game g " .
+        "WHERE g.closed=false " .
         "AND g.number_players = 2 " .
         "AND g.token_player_one NOT IN (:player_one_token) " .
         "AND g.token_player_two NOT IN (:player_two_token) " .
