@@ -20,14 +20,14 @@ class GameManager
         $this->gameRepository = $gameRepository;
     }
 
-    public function newGame(int $size, string $playerName = '') : Game
+    public function newGame(int $size, $playerName = '') : Game
     {
         $game = Game::new($size, $playerName);
         $this->gameRepository->save($game);
         return $game;
     }
 
-    public function newGameSolo(int $size, string $playerName = '') : Game
+    public function newGameSolo(int $size, $playerName = '') : Game
     {
         $game = $this->newGame($size, $playerName);
         $game->setNumberOfPlayers(2);

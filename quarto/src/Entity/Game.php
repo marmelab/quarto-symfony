@@ -234,7 +234,7 @@ class Game
         return $this;
     }
 
-    public static function new(int $size, string $playerName = '') : Game
+    public static function new(int $size, $playerName = '') : Game
     {
         $grid = [];
 

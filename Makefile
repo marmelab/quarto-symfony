@@ -25,3 +25,11 @@ stop: ## Stop the server
 
 test: ## Test the code
 	docker-compose run --no-deps --rm php bin/phpunit
+
+deploy: ## Deploy website on Web Server (Need a defined ssh connexion named "quarto")
+	zip -r quarto.zip quarto composer.json composer-setup.php composer.lock -x /quarto/var/cache/dev/* /quarto/vendor/*
+	ssh quarto mkdir -p quarto-symfony
+	scp -v quarto.zip quarto:~/quarto-symfony/
+	ssh quarto 'unzip -uo ~/quarto-symfony/quarto.zip -d ~/quarto-symfony/'
+	ssh quarto 'rm -f ~/quarto-symfony/quarto.zip'
+	rm -f quarto.zip
