@@ -44,7 +44,7 @@ make test
 ## Deploy
 
 Deploy project on server
-  -Need an existing ssh connexion to a server named "quarto"
+  -Add ssh parameter to specify distant connection name (like make deploy sshname=quartoServer)
 
 ```
 make deploy
