@@ -234,7 +234,7 @@ class Game
         return $this;
     }
 
-    public static function new(int $size, string $avatar = '') : Game
+    public static function new(int $size, string $playerName = '') : Game
     {
         $grid = [];
 
@@ -247,7 +247,21 @@ class Game
 
         $token = TokenManager::generate();
 
-        return new Game(0, $grid, true, 0, 1, false, [], false, $token, '', $avatar ?  $avatar : 'John Doe', '', '');
+        return new Game(
+            0,
+            $grid,
+            true,
+            0,
+            1,
+            false,
+            [],
+            false,
+            $token,
+            '',
+            $playerName ?  $playerName : 'John Doe',
+            '',
+            ''
+        );
     }
 
     public function getAllPieces() : array
