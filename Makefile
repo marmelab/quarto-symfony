@@ -25,3 +25,16 @@ stop: ## Stop the server
 
 test: ## Test the code
 	docker-compose run --no-deps --rm php bin/phpunit
+
+deploy: ## Deploy website on Web Server (Need an sshname parameter for distant connection)
+	zip -r quarto.zip quarto composer.json composer-setup.php composer.lock -x /quarto/var/cache/dev/* /quarto/vendor/* /quarto/.env /quarto/.env.dist /quarto/config/packages/doctrine.yaml
+	ssh $(sshname) mkdir -p quarto-symfony
+	scp -v quarto.zip $(sshname):~/quarto-symfony/
+	ssh $(sshname) 'unzip -uo ~/quarto-symfony/quarto.zip -d ~/quarto-symfony/'
+	ssh $(sshname) 'rm -f ~/quarto-symfony/quarto.zip'
+	rm -f quarto.zip
+	ssh $(sshname) 'cd quarto-symfony/quarto && ./bin/composer install'
+	ssh $(sshname) "bash -ci './quarto-symfony/quarto/bin/console doctrine:database:create --if-not-exists && ./quarto-symfony/quarto/bin/console doctrine:schema:update --force'"
+	ssh $(sshname) sudo service nginx restart
+	
+
