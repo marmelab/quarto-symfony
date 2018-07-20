@@ -42,9 +42,10 @@ class GameApiController extends Controller
         return $response;
     }
 
-    public function newSolo()
+    public function newSolo(Request $request)
     {
-        $game = $this->gameManager->newGameSolo(self::GRID_SIZE);
+        $playerName = $request->query->get('name');
+        $game = $this->gameManager->newGameSolo(self::GRID_SIZE, $playerName);
         $jsonContent = $this->serializer->serialize($game, 'json');
         $response = new JsonResponse($jsonContent, 200, $this->headers, true);
         return $response;
