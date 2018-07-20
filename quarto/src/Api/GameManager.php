@@ -32,6 +32,7 @@ class GameManager
         $game = $this->newGame($size, $playerName);
         $game->setNumberOfPlayers(2);
         $game->setSoloGame(true);
+        $game->setPlayerTwoName('AI Level 1');
         $this->gameRepository->save($game);
         return $game;
     }
