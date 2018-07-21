@@ -434,20 +434,22 @@ class Game
 
     public function getWinningPlaces() : array
     {
-        $badPositions= [];
+        $goodPositions= [];
         $gridSize = count($this->grid);
         $j = 0;
         if ($gridSize > 0) {
             for ($y = 0; $y < $gridSize; $y++) {
                 for ($x = 0; $x < $gridSize; $x++) {
-                    if ($this->getWinningPosition($x, $y, $this->selected_piece) != []) {
-                        $badPositions[$j] = array($y, $x);
-                        $j ++;
+                    if ($this->grid[$y][$x] === '.') {
+                        if ($this->getWinningPosition($x, $y, $this->selected_piece) != []) {
+                            $goodPositions[$j] = array($y, $x);
+                            $j ++;
+                        }
                     }
                 }
             }
         }
-        return $badPositions;
+        return $goodPositions;
     }
 
     public function getWinningPieces() : array
@@ -460,10 +462,12 @@ class Game
             if ($gridSize > 0) {
                 for ($y = 0; $y < $gridSize; $y++) {
                     for ($x = 0; $x < $gridSize; $x++) {
-                        if ($this->getWinningPosition($x, $y, $remainingPiece->getId()) != []) {
-                            $badPieces[$j] = $remainingPiece->getId();
-                            $j ++;
-                            break;
+                        if ($this->grid[$y][$x] === '.') {
+                            if ($this->getWinningPosition($x, $y, $remainingPiece->getId()) != []) {
+                                $badPieces[$j] = $remainingPiece->getId();
+                                $j ++;
+                                break;
+                            }
                         }
                     }
                 }
