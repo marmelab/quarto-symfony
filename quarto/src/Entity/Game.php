@@ -440,11 +440,9 @@ class Game
         if ($gridSize > 0) {
             for ($y = 0; $y < $gridSize; $y++) {
                 for ($x = 0; $x < $gridSize; $x++) {
-                    if ($this->grid[$y][$x] === '.') {
-                        if ($this->getWinningPosition($x, $y, $this->selected_piece) != []) {
-                            $goodPositions[$j] = array($y, $x);
-                            $j ++;
-                        }
+                    if ($this->grid[$y][$x] === '.' && $this->getWinningPosition($x, $y, $this->selected_piece) != []) {
+                        $goodPositions[$j] = array($y, $x);
+                        $j ++;
                     }
                 }
             }
@@ -458,8 +456,8 @@ class Game
         $remainingPieces = $this->getRemainingPieces();
         $gridSize = count($this->grid);
         $j = 0;
-        foreach ($remainingPieces as $remainingPiece) {
-            if ($gridSize > 0) {
+        if ($gridSize > 0) {
+            foreach ($remainingPieces as $remainingPiece) {
                 for ($y = 0; $y < $gridSize; $y++) {
                     for ($x = 0; $x < $gridSize; $x++) {
                         if ($this->grid[$y][$x] === '.') {
